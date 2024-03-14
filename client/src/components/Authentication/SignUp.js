@@ -13,11 +13,11 @@ export default function SignUp(){
             },
             body: JSON.stringify({ email, username, password }),
           });
-    
-          if (response.status === 201) {
+          const data = await response.json();
+          if (response.status === 200) {
             console.log('User created successfully');
           } else {
-            console.log('Error creating user');
+            alert(data.message);
           }
         } catch (error) {
           console.error(error);

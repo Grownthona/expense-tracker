@@ -28,11 +28,10 @@ const verifyToken = (req, res, next) => {
 };
 
 router.route('/').get( verifyToken, async(req, res) => {
-  // Access the decoded user object from the request
   let { user } = req.userId;
-  console.log(userid);
+  //console.log(userid);
   
-  res.json({ message:  user });
+  res.json({userid});
 });
 
 router.route('/signup').post(async(req, res) => {
@@ -43,7 +42,9 @@ router.route('/signup').post(async(req, res) => {
       if (existingUser) {
         return res.status(400).json({ message: 'Username already exists' });
       }
-
+      if(password === null || password.trim()===''){
+        return res.status(401).json({ message: 'Incorrect password' });
+      }
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = new User({ email, username, password: hashedPassword });
       await user.save();
@@ -58,8 +59,23 @@ router.route('/signup').post(async(req, res) => {
   router.route('/signin').post(async(req, res) => {
     try {
       const { email, password } = req.body;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValidEmail= emailRegex.test(email);
+
+      if (!isValidEmail) {
+        return res.status(400).json({ message: 'Invalid email format' });
+      }
+      // Find user by email
       const user = await User.findOne({ email });
-  
+      // Check if user exists
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      // Check if password matches
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Incorrect password' });
+      }
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({  userId : user._id }, 'rs8Hjjs&hbsg56');
         res.status(200).json({ token });
