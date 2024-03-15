@@ -11,9 +11,11 @@ app.use(cors({
 }))
 const expenseRouter = require('./routes/expense');
 const userRoute = require('./routes/user');
+const budgetRouter = require('./routes/budget');
 
 app.use('/expense', expenseRouter);
 app.use('/user', userRoute);
+app.use('/budget',budgetRouter);
 
 app.get("/api",(req,res)=>{
     res.json({"users":["userOne","userTwo","userThree"]})

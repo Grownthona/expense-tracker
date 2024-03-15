@@ -9,29 +9,12 @@ const bodyParser = require("body-parser");
 router.use(bodyParser.json());
 
 let User = require('../models/userModel');
-// Protected route
-let userid = null;
+const checkLogin = require('../middlewares/checkLogin');
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
-  if (!token) {
-    return res.status(403).json({ message: 'Token is required' });
-  }
-  jwt.verify(token, 'rs8Hjjs&hbsg56', (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: err });
-    }
-    userid = decoded.userId;
-    req.userId = decoded.userId; // Assuming your JWT payload includes a 'user' object
-    next();
-  });
-};
-
-router.route('/').get( verifyToken, async(req, res) => {
-  let { user } = req.userId;
-  //console.log(userid);
-  
-  res.json({userid});
+router.route('/').get(checkLogin, async(req, res) => {
+  const data = req.userId;
+  console.log(data);
+  res.json({data});
 });
 
 router.route('/signup').post(async(req, res) => {
@@ -78,6 +61,7 @@ router.route('/signup').post(async(req, res) => {
       }
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({  userId : user._id }, 'rs8Hjjs&hbsg56');
+        
         res.status(200).json({ token });
       } else {
         res.status(401).json({ message: 'Invalid credentials' });
