@@ -9,6 +9,7 @@ export default function AddBudget({id,category,total,budget}){
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState('');
     const [totalBud,setTotal] = useState(0);
+
    
 
     const handleClickOpen = () => {
@@ -19,14 +20,18 @@ export default function AddBudget({id,category,total,budget}){
         setOpen(false);
     };
     const handleTotal = async() => {
+        // Alert the totalBudget value of the first budget item after updating
         budget.totalBudget = totalBud;
         try {
+            const token = localStorage.getItem('token');
+           
             const response = await fetch('http://localhost:5000/budget/addbudget', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-
+                'Authorization': `Bearer ${token}`
               },
+
               body: JSON.stringify({ budget }),
             });
             const data = await response.json();
@@ -35,6 +40,7 @@ export default function AddBudget({id,category,total,budget}){
             console.error('Error:', error);
         }
     }
+    
     const handleSubmit = async() => {
 
         const updatedBudgets = budget.budgets.map(item => {
@@ -66,7 +72,7 @@ export default function AddBudget({id,category,total,budget}){
     <div style={{width:"100%",height:"100%"}}>   
     <button onClick={handleClickOpen}>Add</button>
     <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 0,width: '40%',height:'60%' ,borderRadius: '16px' } }} maxWidth="xs">
-        {total > 0 ? 
+    {total > 0 ? 
         <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Category Name" value={category} readOnly={category}/>
         <input type="text" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />

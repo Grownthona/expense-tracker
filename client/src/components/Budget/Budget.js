@@ -3,9 +3,10 @@ import AddBudget from './AddBudget';
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
+  
 
   useEffect(() => {
-    
+   
     const fetchBudget = async () => {
         try {
           const token = localStorage.getItem('token');
@@ -39,6 +40,7 @@ function Budget() {
   return (
     <div>
       <h2>Budget List</h2>
+  
       <ul>
         {budget && (
           <li key={budget._id}>

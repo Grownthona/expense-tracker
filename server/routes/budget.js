@@ -3,6 +3,10 @@ const checkLogin = require('../middlewares/checkLogin');
 let Budget = require('../models/budgetModel');
 let Catagory = require('../models/catagoryModel');
 let UserCategory = require('../models/userCatagoryModel');
+const bodyParser = require("body-parser");
+
+router.use(bodyParser.json());
+
 
 router.route('/addnewcategory').post(checkLogin, async (req, res) => {
   const userId = req.userId;
@@ -20,25 +24,21 @@ router.route('/addnewcategory').post(checkLogin, async (req, res) => {
   }
 });
 
-router.route('/addbudget').post(checkLogin,async (req, res) => {
-  const userId = req.userId;
-
-  console.log(userId);
-
+router.route('/addbudget').post(async (req, res) => {
   try {
+    const { budget } = req.body;
+    const { _id, user, totalBudget, budgets, date} = budget;
+
     const updateBudget = { 
-      user: userId,
-      totalBudget : req.body.totalBudget,
-      budgets : req.body.budgets
-  };
-  console.log(updateBudget);
-    //await Budget.findOneAndUpdate({ user : userId }, updateBudget, {new: true});
+      user: user,
+      totalBudget : totalBudget,
+      budgets : budgets
+    };
+    await Budget.findOneAndUpdate({ user : user }, updateBudget, {new: true});
     return res.status(201).json({ message : "Budget Updated" });
   }catch (err) {
-    //console.error(err);
     res.status(500).send('Server error');
   }
-
 });
 
 
