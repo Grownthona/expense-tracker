@@ -7,7 +7,6 @@ const bodyParser = require("body-parser");
 
 router.use(bodyParser.json());
 
-
 router.route('/addnewcategory').post( async (req, res) => {
   const {user,category,amount} = req.body;
   console.log(user+' '+category+' '+amount);
@@ -18,6 +17,21 @@ router.route('/addnewcategory').post( async (req, res) => {
       amount : amount
     });
     await newCategory.save();
+   
+      const mergedCategoryWithBudget = {
+        category: category,
+        amount: amount
+      };
+
+      Budget.updateOne({ user : user }, { $push: { budgets: mergedCategoryWithBudget } } )
+        .then(result => {
+           return res.json(CurrentMonthBudget);
+        })
+        .catch(error => {
+          res.status(500).send(error);
+      });
+
+    
     return res.status(201).json({ message: 'New Category added!' });
     
   } catch (err) {
@@ -58,19 +72,7 @@ router.route('/').get(checkLogin,async (req, res) => {
 
     if(CurrentMonthBudget){
       //The user has current month budget
-      const mergedCategoryWithBudget = userCategory.map(item => ({
-        category: item.category,
-        amount: item.amount
-      }));
-
-      Budget.updateOne({ _id: budgetId }, { $push: { budgets: mergedCategoryWithBudget } } )
-        .then(result => {
            return res.json(CurrentMonthBudget);
-        })
-        .catch(error => {
-          res.status(500).send(error);
-      });
-
     }else{
       //User does not have current month budget so show default categories with amount 
 

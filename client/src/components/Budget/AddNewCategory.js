@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material';
 
-export default function AddNewCategory({user}){
+export default function AddNewCategory({ user }){
     const [open, setOpen] = useState(false);
     const [category,setCategory] = useState('');
     const [amount,setAmount] = useState('');

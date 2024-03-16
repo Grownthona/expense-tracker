@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 
 import Dialog from '@mui/material/Dialog';
 
@@ -9,6 +9,7 @@ export default function AddBudget({id,category,total,budget}){
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState('');
     const [totalBud,setTotal] = useState(0);
+    const [totalBudget, setTotalBudget] = useState(0);
 
    
 
@@ -19,6 +20,11 @@ export default function AddBudget({id,category,total,budget}){
     const handleClose = () => {
         setOpen(false);
     };
+    useEffect(() => {
+      const total = budget.budgets.reduce((acc, budget) => acc + budget.amount, 0);
+      setTotalBudget(total);
+    }, [budget]);
+  
     const handleTotal = async() => {
         // Alert the totalBudget value of the first budget item after updating
         budget.totalBudget = totalBud;
@@ -42,7 +48,8 @@ export default function AddBudget({id,category,total,budget}){
     }
     
     const handleSubmit = async() => {
-
+      // checking if newly added budget will exceed the total budget or not
+        if(totalBudget + amount <= total){ 
         const updatedBudgets = budget.budgets.map(item => {
             if (item._id === id) {
                 return { ...item, amount: amount };
@@ -66,13 +73,16 @@ export default function AddBudget({id,category,total,budget}){
           } catch (error) {
             console.error('Error:', error);
         }
+      } else {
+        alert("you're Exceeding total budget.");
+      }
     }
 
     return(
     <div style={{width:"100%",height:"100%"}}>   
     <button onClick={handleClickOpen}>Add</button>
     <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 0,width: '40%',height:'60%' ,borderRadius: '16px' } }} maxWidth="xs">
-    {total > 0 ? 
+    {total > 0 ? //when user has defined total budget
         <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Category Name" value={category} readOnly={category}/>
         <input type="text" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />

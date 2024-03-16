@@ -5,9 +5,9 @@ import AddNewCategory from './AddNewCategory';
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
+
   
   useEffect(() => {
-   
     const fetchBudget = async () => {
         try {
           const token = localStorage.getItem('token');
@@ -32,6 +32,8 @@ function Budget() {
       fetchBudget();
       
   }, []);
+
+
   if(!budget){
     return <p>No budgets available</p>;
   }
