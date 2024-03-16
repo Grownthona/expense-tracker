@@ -4,7 +4,7 @@ let Budget = require('../models/budgetModel');
 let Catagory = require('../models/catagoryModel');
 let UserCategory = require('../models/userCatagoryModel');
 
-router.route('/addnewcategory').post(checkLogin,async (req, res) => {
+router.route('/addnewcategory').post(checkLogin, async (req, res) => {
   const userId = req.userId;
   const {category,amount} = req.body;
   try {
@@ -20,6 +20,50 @@ router.route('/addnewcategory').post(checkLogin,async (req, res) => {
   }
 });
 
+router.route('/addbudget').post(checkLogin,async (req, res) => {
+  const userId = req.userId;
+
+  console.log(userId);
+
+  try {
+    const updateBudget = { 
+      user: userId,
+      totalBudget : req.body.totalBudget,
+      budgets : req.body.budgets
+  };
+  console.log(updateBudget);
+    //await Budget.findOneAndUpdate({ user : userId }, updateBudget, {new: true});
+    return res.status(201).json({ message : "Budget Updated" });
+  }catch (err) {
+    //console.error(err);
+    res.status(500).send('Server error');
+  }
+
+});
+
+
+/*
+router.route('/addtotalbudget').post(checkLogin,async (req, res) => {
+  const userId = req.userId;
+  try {
+    // Update the total budget value for the specified user
+    const updatedBudget = await Budget.findOneAndUpdate(
+      { user: userId },
+      { totalBudget: req.body.totalBudget },
+      { new: true } // Return the modified document after update
+    );
+
+    if (!updatedBudget) {
+      return res.status(404).json({message : "Budget not found for the user" });
+    }
+
+    return res.status(200).json({message : "Total budget updated successfully" });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+*/
+
 router.route('/').get(checkLogin,async (req, res) => {
 
     const userId = req.userId;
@@ -34,7 +78,6 @@ router.route('/').get(checkLogin,async (req, res) => {
     const CurrentMonthBudget = await Budget.findOne({ user: userId, date: { $gte: startOfMonth, $lte: endOfMonth } });
     const budgetId = CurrentMonthBudget._id;
 
-
     if(CurrentMonthBudget){
       //The user has current month budget
       const mergedCategoryWithBudget = userCategory.map(item => ({
@@ -44,7 +87,7 @@ router.route('/').get(checkLogin,async (req, res) => {
 
       Budget.updateOne({ _id: budgetId }, { $push: { budgets: mergedCategoryWithBudget } } )
         .then(result => {
-           return res.status(200).json({ message: "Main Budget Updated!"});
+           return res.json(CurrentMonthBudget);
         })
         .catch(error => {
           res.status(500).send(error);

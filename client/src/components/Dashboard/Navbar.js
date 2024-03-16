@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate ,Link} from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import logo from './images/logo_02.png';
 import './Navbar.css';
@@ -37,11 +37,13 @@ export default function Navbar(){
                     </div>
     
                     <div className='nav-items'>
-                        <p><span class="icon">💵</span>Expenses</p>
+                        <p><span className="icon">💵</span>Expenses</p>
                     </div>
-                    <div className='nav-items'>
-                        <p><span class="icon">📦</span>Catagories</p>
-                    </div>
+                    <Link to={'/budget'}>
+                        <div className='nav-items'>
+                            <p><span className="icon">📦</span>Catagories</p>
+                        </div>
+                    </Link>
                     <div>
                         <p>{decodedToken}</p>
                     </div>

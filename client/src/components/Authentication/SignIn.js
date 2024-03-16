@@ -1,4 +1,5 @@
 import React,{ useState } from "react";
+import { Navigate } from "react-router-dom";
 export default function SignIn(){
    
     const [email, setEmail] = useState('');
@@ -21,6 +22,7 @@ export default function SignIn(){
         if (response.status === 200) {
             localStorage.setItem('token', data.token); // Store token in localStorage
             console.log(data.token);
+            return <Navigate to="/" />;
         } else {
             alert(data.message); // Show error message
         }
