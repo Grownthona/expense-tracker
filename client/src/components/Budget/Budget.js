@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import AddBudget from './AddBudget';
+import AddNewCategory from './AddNewCategory';
+
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
   
-
   useEffect(() => {
    
     const fetchBudget = async () => {
@@ -22,8 +23,6 @@ function Budget() {
           console.log(data);
           setBudgets(data);
 
-        }else{
-        
         }
         } catch (error) {
           console.error(error);
@@ -39,8 +38,8 @@ function Budget() {
 
   return (
     <div>
+      {budget && <AddNewCategory user={budget.user}/>}
       <h2>Budget List</h2>
-  
       <ul>
         {budget && (
           <li key={budget._id}>

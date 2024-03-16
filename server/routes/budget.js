@@ -8,17 +8,18 @@ const bodyParser = require("body-parser");
 router.use(bodyParser.json());
 
 
-router.route('/addnewcategory').post(checkLogin, async (req, res) => {
-  const userId = req.userId;
-  const {category,amount} = req.body;
+router.route('/addnewcategory').post( async (req, res) => {
+  const {user,category,amount} = req.body;
+  console.log(user+' '+category+' '+amount);
   try {
     const newCategory = new UserCategory({
-      user : userId,
+      user : user,
       category : category,
       amount : amount
     });
     await newCategory.save();
     return res.status(201).json({ message: 'New Category added!' });
+    
   } catch (err) {
     res.status(500).send('Server error');
   }
@@ -40,29 +41,6 @@ router.route('/addbudget').post(async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-
-
-/*
-router.route('/addtotalbudget').post(checkLogin,async (req, res) => {
-  const userId = req.userId;
-  try {
-    // Update the total budget value for the specified user
-    const updatedBudget = await Budget.findOneAndUpdate(
-      { user: userId },
-      { totalBudget: req.body.totalBudget },
-      { new: true } // Return the modified document after update
-    );
-
-    if (!updatedBudget) {
-      return res.status(404).json({message : "Budget not found for the user" });
-    }
-
-    return res.status(200).json({message : "Total budget updated successfully" });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-*/
 
 router.route('/').get(checkLogin,async (req, res) => {
 
