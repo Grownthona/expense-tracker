@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material';
 
-export default function AddNewCategory({ user }){
+export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
     const [open, setOpen] = useState(false);
     const [category,setCategory] = useState('');
     const [amount,setAmount] = useState('');
@@ -16,6 +16,11 @@ export default function AddNewCategory({ user }){
         setOpen(false);
     };
     const handleSubmit = async() => {
+        let monthly = parseFloat(monthlyBudget);
+        let spending = parseFloat(spendingBudget);
+        let newAmount = parseFloat(amount);
+
+        if(spending +newAmount <= monthly){
         try {
             const response = await fetch('http://localhost:5000/budget/addnewcategory', {
               method: 'POST',
@@ -29,6 +34,9 @@ export default function AddNewCategory({ user }){
            } catch (error) {
             console.error('Error:', error);
         }
+    }else{
+        alert("Your current budget will exceed to Total Budget Amount");
+    }
     }
     return(
         <div>

@@ -4,14 +4,13 @@ import { useState ,useEffect} from 'react';
 import Dialog from '@mui/material/Dialog';
 
 
-export default function AddBudget({id,category,total,budget}){
+export default function AddBudget({id,category,total,budget,currentamount}){
 
     const [open, setOpen] = useState(false);
-    const [amount, setAmount] = useState('');
-    const [totalBud,setTotal] = useState(0);
-    const [totalBudget, setTotalBudget] = useState(0);
+    const [amount, setAmount] = useState(currentamount);
+    const [totalBud,setTotal] = useState(0.0);
+    const [totalBudget, setTotalBudget] = useState(0.0);
 
-   
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -49,7 +48,15 @@ export default function AddBudget({id,category,total,budget}){
     
     const handleSubmit = async() => {
       // checking if newly added budget will exceed the total budget or not
-        if(totalBudget + amount <= total){ 
+      let x = parseFloat(totalBudget);
+      let y = parseFloat(amount);
+      let z = parseFloat(total);
+      let a = parseFloat(currentamount);
+      if(a>0){
+        x -= a;
+      }
+
+        if(x + y < z){ 
         const updatedBudgets = budget.budgets.map(item => {
             if (item._id === id) {
                 return { ...item, amount: amount };
@@ -74,8 +81,10 @@ export default function AddBudget({id,category,total,budget}){
             console.error('Error:', error);
         }
       } else {
-        alert("you're Exceeding total budget.");
+        
+        alert("You're exceeding the current monthly budget");
       }
+      
     }
 
     return(

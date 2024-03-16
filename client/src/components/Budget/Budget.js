@@ -5,7 +5,7 @@ import AddNewCategory from './AddNewCategory';
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
-
+  const [totalBudget, setTotalBudget] = useState(0.0);
   
   useEffect(() => {
     const fetchBudget = async () => {
@@ -33,6 +33,13 @@ function Budget() {
       
   }, []);
 
+  useEffect(() => {
+
+    const total = budgetlist.reduce((acc, budget) => acc + budget.amount, 0);
+    setTotalBudget(total);
+  }, [budgetlist]);
+
+
 
   if(!budget){
     return <p>No budgets available</p>;
@@ -40,7 +47,7 @@ function Budget() {
 
   return (
     <div>
-      {budget && <AddNewCategory user={budget.user}/>}
+      {budget && <AddNewCategory user={budget.user} monthlyBudget={budget.totalBudget} spendingBudget={totalBudget}/>}
       <h2>Budget List</h2>
       <ul>
         {budget && (
@@ -52,7 +59,7 @@ function Budget() {
                 <li key={key}>
                   <p>Category: {item.category}</p>
                   <p>Amount: {item.amount}</p>
-                  <AddBudget id={item._id} category={item.category} total={budget.totalBudget} budget={budget}/>
+                  <AddBudget id={item._id} category={item.category} currentamount={item.amount} total={budget.totalBudget} budget={budget}/>
                 </li>
               ))}
             </ul>
