@@ -1,0 +1,24 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.dashboard-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items:flex-start;
+}
+.dashboard-navbar{
+    width: 20%;
+    border: 1px solid salmon;
+}
+
+.dashboard-board{
+    width: 78%;
+    padding: 2rem;
+    border: 1px solid rgb(117, 17, 6);
+}
+.month-names{
+    cursor: pointer;
+}

@@ -103,7 +103,6 @@ export default function AddExpense(){
             <Button>Add Expense</Button>
             <p>{user}</p>
                 <form onSubmit={handleSubmit}>
-                  
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     
                     <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={category} label="Category" onChange={(e) => setCategory(e.target.value)}>
@@ -112,17 +111,13 @@ export default function AddExpense(){
                       ))}
                       
                     </Select>
-                    
-
                     <input type="text" placeholder="Expense Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                     <input type="text" placeholder="Payment Method" value={paymentmethod} onChange={(e) => setPaymentMethod(e.target.value)} />
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={paymentmethod} label="Payment Method" onChange={(e) => setPaymentMethod(e.target.value)}>
-                      
                         <MenuItem value={"Cash"}>Cash</MenuItem>
                         <MenuItem value={"Card"}>Card</MenuItem>
-                    
                     </Select>
                     <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
                     

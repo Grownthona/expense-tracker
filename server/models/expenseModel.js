@@ -27,6 +27,12 @@ const expenseSchema = new mongoose.Schema({
   location :{
     type : String,
   },
+  month : {
+    type : String,
+  },
+  year : {
+    type : String,
+  },
   date: {
     type: Date,
     default: Date.now

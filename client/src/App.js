@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route,Routes} from 'react-router-dom';
-import Navbar from './components/Dashboard/Navbar';
 import Home from './components/Dashboard/Home';
 import SignIn from './components/Authentication/SignIn';
 import SignUp from './components/Authentication/SignUp';
 import Budget from './components/Budget/Budget';
 import Expense from './components/Expense/Expense';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   const isAuthenticated = localStorage.getItem('token');
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Routes>
           {isAuthenticated ? 
-            <Route path='/' element={<Navbar/>}></Route>
+            <Route path='/' element={<Dashboard/>}></Route>
           :
             <Route path='/' element={<Home/>}></Route>
           }

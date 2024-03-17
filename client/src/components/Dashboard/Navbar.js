@@ -26,7 +26,9 @@ export default function Navbar(){
         return <Navigate to="/user/signin" />;
 
       };
+      
     return(
+        
         <div>
             <div className='navbar'>
                 <div className='navbar-container'>
@@ -55,5 +57,6 @@ export default function Navbar(){
                 </div>
             </div>
         </div>
+        
     )
 }
