@@ -4,6 +4,7 @@ import Home from './components/Dashboard/Home';
 import SignIn from './components/Authentication/SignIn';
 import SignUp from './components/Authentication/SignUp';
 import Budget from './components/Budget/Budget';
+import Expense from './components/Expense/Expense';
 
 function App() {
   const isAuthenticated = localStorage.getItem('token');
@@ -24,6 +25,7 @@ function App() {
           <Route path='/user/signin' element={<SignIn/>}></Route>
           <Route path='/user/signup' element = {<SignUp/>}></Route>
           <Route path='/budget' element = {<Budget/>}></Route>
+          <Route path='/expense' element = {<Expense/>}></Route>
         </Routes>
       </Router>
     </div>

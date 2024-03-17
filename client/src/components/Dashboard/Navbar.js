@@ -36,12 +36,14 @@ export default function Navbar(){
                         </div>
                     </div>
     
-                    <div className='nav-items'>
-                        <p><span className="icon">💵</span>Expenses</p>
-                    </div>
                     <Link to={'/budget'}>
                         <div className='nav-items'>
                             <p><span className="icon">📦</span>Catagories</p>
+                        </div>
+                    </Link>
+                    <Link to={'/expense'}>
+                        <div className='nav-items'>
+                            <p><span className="icon">💵</span>Expense</p>
                         </div>
                     </Link>
                     <div>
