@@ -50,6 +50,7 @@ router.route('/signup').post(async(req, res) => {
       }
       // Find user by email
       const user = await User.findOne({ email });
+
       // Check if user exists
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -60,7 +61,11 @@ router.route('/signup').post(async(req, res) => {
         return res.status(401).json({ message: 'Incorrect password' });
       }
       if (user && (await bcrypt.compare(password, user.password))) {
-        const token = jwt.sign({  userId : user._id }, 'rs8Hjjs&hbsg56');
+        //console.log(user._id);
+        const userIdString = user._id.toString();
+        console.log(userIdString);
+
+        const token = jwt.sign({ userId : userIdString }, 'rs8Hjjs&hbsg56');
         
         res.status(200).json({ token });
       } else {

@@ -121,8 +121,22 @@ router.route('/addcatagory').post(async(req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+  router.route('/allexpenses').get(checkLogin,async(req, res) => {
+    
+    const userId = req.userId;
+    console.log("expense : "+ userId);
+    try {
+      // Find all expenses where the user field matches the provided userId
+      const expenses = await Expense.find({ user: userId });
+      res.json(expenses);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
   router.route('/').get(checkLogin,async(req, res) => {
     const userId = req.userId;
+    
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;     

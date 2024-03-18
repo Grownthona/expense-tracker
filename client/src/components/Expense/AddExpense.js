@@ -21,7 +21,7 @@ export default function AddExpense(){
     const [user,setUser] = useState('');
   
     const [categoryAmountDict, setCategoryAmountDict] = useState({});
-    const [categoryBudget, setCategoryBudget] = useState(0.0);
+    const [budget, setCategoryBudget] = useState(0.0);
     const [date, setSelectedDate] = useState(null);
 
     
@@ -72,20 +72,35 @@ export default function AddExpense(){
       
     }, []);
 
+    function checkBudgetOfMonth(d){
+      const currentDate = new Date(d);
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;
+
+      if((currentYear !== new Date().getFullYear()) ||( currentMonth !== new Date().getMonth() + 1)){
+        setCategoryBudget(0.0);
+      }
+    }
 
     const handleSubmit = async() =>{
+      if(date !== null && amount>0.0 && category !== ''){
+        checkBudgetOfMonth(date);
       try {
         const response = await fetch('http://localhost:5000/expense/addexpense', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user, category, amount,categoryBudget, description, paymentmethod, location, date }),
+          body: JSON.stringify({ user, category, amount,budget, description, paymentmethod, location, date }),
         });
         const data = await response.json();
         console.log(data);
       } catch (error) {
         console.error('Error:', error);
+        
+    }
+    }else{
+      alert("Please Insert the form information to add your expense");
     }
     }
 
@@ -117,7 +132,7 @@ export default function AddExpense(){
                       ))}
                       
                     </Select>
-                    {categoryBudget && <p>"The selected category Budget is : {categoryBudget}</p>}
+                    {budget && <p>"The selected category Budget is : {budget}</p>}
                     <input type="text" placeholder="Expense Amount" value={amount} onChange={handleExpenseAmount} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
               
@@ -134,7 +149,6 @@ export default function AddExpense(){
                     )}
                     <button type="submit">Add</button>
                 </form>
-        
         </div>
     );
 }

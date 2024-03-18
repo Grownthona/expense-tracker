@@ -10,6 +10,7 @@ const checkLogin = (req,res,next) =>{
    if (err) {
       return res.status(401).json({ message: err });
    }
+   console.log(decoded);
    userid = decoded.userId;
    req.userId = userid; 
    next();

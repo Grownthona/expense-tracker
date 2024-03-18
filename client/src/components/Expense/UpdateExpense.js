@@ -60,7 +60,7 @@ const [location, setLocation] = useState(expense.location);
     }
 
     const handleExpenseAmount = (e) => {
-      setAmount(e.target.value);
+      
       const expenseCost = e.target.value;
       
       if(parseFloat(expenseCost)>parseFloat(expense.budget)){
