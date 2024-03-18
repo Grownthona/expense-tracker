@@ -72,9 +72,16 @@ router.route('/addcatagory').post(async(req, res) => {
     const { month, year } = extractMonthAndYearFromDate(date);
 
     try {
+      const expenseExists = await Expense.findOne({ user: user,category : category,month : month, year : year});
+      console.log(expenseExists);
+      if(!expenseExists){
+        
       const newExpense = new Expense({ user, category, amount,budget, description,paymentmethod,location,month,year,date});
       await newExpense.save();
       return res.status(201).json('New Expense added successfully' );
+      }else{
+        return res.status(400).json('This expense has already been added' );
+      }
     } catch(err){
       return res.status(400).json(err);
     }
@@ -124,16 +131,19 @@ router.route('/addcatagory').post(async(req, res) => {
   router.route('/allexpenses').get(checkLogin,async(req, res) => {
     
     const userId = req.userId;
-    console.log("expense : "+ userId);
+    
     try {
       // Find all expenses where the user field matches the provided userId
       const expenses = await Expense.find({ user: userId });
-      res.json(expenses);
+      if(expenses){
+        return res.json(expenses);
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
+
   router.route('/').get(checkLogin,async(req, res) => {
     const userId = req.userId;
     

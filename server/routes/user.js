@@ -63,7 +63,7 @@ router.route('/signup').post(async(req, res) => {
       if (user && (await bcrypt.compare(password, user.password))) {
         //console.log(user._id);
         const userIdString = user._id.toString();
-        console.log(userIdString);
+
 
         const token = jwt.sign({ userId : userIdString }, 'rs8Hjjs&hbsg56');
         

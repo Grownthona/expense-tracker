@@ -72,19 +72,11 @@ export default function AddExpense(){
       
     }, []);
 
-    function checkBudgetOfMonth(d){
-      const currentDate = new Date(d);
-      const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth() + 1;
-
-      if((currentYear !== new Date().getFullYear()) ||( currentMonth !== new Date().getMonth() + 1)){
-        setCategoryBudget(0.0);
-      }
-    }
+   
 
     const handleSubmit = async() =>{
       if(date !== null && amount>0.0 && category !== ''){
-        checkBudgetOfMonth(date);
+       
       try {
         const response = await fetch('http://localhost:5000/expense/addexpense', {
           method: 'POST',
@@ -94,6 +86,10 @@ export default function AddExpense(){
           body: JSON.stringify({ user, category, amount,budget, description, paymentmethod, location, date }),
         });
         const data = await response.json();
+        console.log(data);
+        if(response.status()=== 404){
+          alert(data);
+        }
         console.log(data);
       } catch (error) {
         console.error('Error:', error);
