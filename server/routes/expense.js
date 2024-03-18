@@ -79,6 +79,48 @@ router.route('/addcatagory').post(async(req, res) => {
       return res.status(400).json(err);
     }
   });
+
+  router.route('/updateexpense').post(async(req, res) => {
+    const {id,user, category, amount,budget, description,paymentmethod,location,date} = req.body;
+    const { month, year } = extractMonthAndYearFromDate(date);
+    console.log(req.body);
+    try {
+      const updateExpense = { 
+      user: user,
+      category:category,
+      amount : amount,
+      budget : budget,
+      description:description,
+      paymentmethod : paymentmethod,
+      location : location,
+      month : month,
+      year : year,
+      date : date
+    };
+
+    await Expense.findOneAndUpdate({ _id : id }, updateExpense, {new: true});
+    return res.status(201).json({ message : "Expense Updated" });
+      
+    } catch(err){
+      return res.status(400).json(err);
+    }
+  });
+
+  router.route('/deleteexpense').post(async(req, res) => {
+    
+    try {
+      const expenseId = req.body;
+      
+      const deletedExpense = await Expense.findByIdAndDelete(expenseId);
+      if (!deletedExpense) {
+        return res.status(404).json({ message: 'Expense not found' });
+      }
+      res.json({ message: 'Expense deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
   router.route('/').get(checkLogin,async(req, res) => {
     const userId = req.userId;
     const currentDate = new Date();

@@ -23,6 +23,8 @@ export default function AddExpense(){
     const [categoryAmountDict, setCategoryAmountDict] = useState({});
     const [categoryBudget, setCategoryBudget] = useState(0.0);
     const [date, setSelectedDate] = useState(null);
+
+    
     const handleDateChange = date => {
       setSelectedDate(date);
     };
