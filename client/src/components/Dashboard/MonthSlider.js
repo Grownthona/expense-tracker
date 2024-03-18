@@ -10,6 +10,7 @@ const MonthSlider = () => {
 
   const [date, setDate] = useState('');
   const [expense, setExpense] = useState([]);
+  const [budget, setBudget] = useState([]);
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1; // Adding 1 to match conventional month numbering
   //const currentYear = currentDate.getFullYear();
@@ -45,7 +46,26 @@ const MonthSlider = () => {
       });
       const data = await response.json();
       setExpense(data);
-      console.log(data);
+      //console.log(data);
+    }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if(token){
+      const response = await fetch('http://localhost:5000/budget/monthlybudget', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ selectedMonth }),
+      });
+      const data = await response.json();  
+      setBudget(data);
+      //console.log(data[0].totalBudget);
     }
     } catch (error) {
       console.error('Error:', error);
@@ -73,7 +93,11 @@ const MonthSlider = () => {
       </Box>
       <p>{date}</p>
       <div>
-        <MonthlyExpenses expense={expense}/>
+        {budget.length>0 ? 
+        <MonthlyExpenses expense={expense} budget={budget[0]}/>
+      :
+      <MonthlyExpenses expense={expense}/>
+      }
       </div>
     </div>
   );

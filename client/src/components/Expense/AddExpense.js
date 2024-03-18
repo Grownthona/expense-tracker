@@ -20,18 +20,12 @@ export default function AddExpense(){
     const [location, setLocation] = useState('');
     const [user,setUser] = useState('');
   
-    //const [categoryAmountDict, setCategoryAmountDict] = useState({});
-
+    const [categoryAmountDict, setCategoryAmountDict] = useState({});
+    const [categoryBudget, setCategoryBudget] = useState(0.0);
     const [date, setSelectedDate] = useState(null);
     const handleDateChange = date => {
       setSelectedDate(date);
     };
-
-
-    
-
-
-    
 
     /*const handleClickOpen = () => {
         setOpen(true);
@@ -55,6 +49,12 @@ export default function AddExpense(){
           const data = await response.json();
           setBudgetsList(data.budgets);
           console.log(data.budgets);
+          const dict = {};
+          data.budgets.forEach(item => {
+            dict[item.category] = item.amount;
+          });
+          console.log(dict);
+          setCategoryAmountDict(dict);
           
           setUser(data.user);
           //setBudgets(data);
@@ -69,20 +69,6 @@ export default function AddExpense(){
     }, []);
 
 
-    // Call the function to populate the dictionary when the component mounts
-    /*useEffect(() => {
-      populateCategoryAmountDict();
-    }, []); 
-
-    const populateCategoryAmountDict = () => {
-      const dict = {};
-      budgetlist.forEach(item => {
-          dict[item.category] = item.amount;
-      });
-      setCategoryAmountDict(dict);
-    };
-    */
-
     const handleSubmit = async() =>{
       try {
         const response = await fetch('http://localhost:5000/expense/addexpense', {
@@ -90,13 +76,29 @@ export default function AddExpense(){
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user, category, amount, description, paymentmethod, location, date }),
+          body: JSON.stringify({ user, category, amount,categoryBudget, description, paymentmethod, location, date }),
         });
         const data = await response.json();
         console.log(data);
       } catch (error) {
         console.error('Error:', error);
     }
+    }
+
+    const handleExpenseAmount = (e) => {
+      const expenseCost = e.target.value;
+      console.log(expenseCost);
+      if(parseFloat(expenseCost)>categoryAmountDict[category]){
+        alert("you're exceeding the current budget value to expense");
+      }else{
+        setAmount(e.target.value);
+      }
+    }
+
+    const handleCategoryChange = (e) => {
+      const categoryExpense = e.target.value;
+      setCategory(e.target.value);
+      setCategoryBudget(categoryAmountDict[categoryExpense]);
     }
     return(
         <div>
@@ -105,13 +107,14 @@ export default function AddExpense(){
                 <form onSubmit={handleSubmit}>
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={category} label="Category" onChange={(e) => setCategory(e.target.value)}>
+                    <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={category} label="Category" onChange={handleCategoryChange}>
                       {budgetlist.map((budget, index) => (
                         <MenuItem key={index} value={budget.category}>{budget.category}</MenuItem>
                       ))}
                       
                     </Select>
-                    <input type="text" placeholder="Expense Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                    {categoryBudget && <p>"The selected category Budget is : {categoryBudget}</p>}
+                    <input type="text" placeholder="Expense Amount" value={amount} onChange={handleExpenseAmount} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                     <input type="text" placeholder="Payment Method" value={paymentmethod} onChange={(e) => setPaymentMethod(e.target.value)} />
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>

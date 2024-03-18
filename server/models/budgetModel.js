@@ -18,6 +18,10 @@ const budgetSchema = new mongoose.Schema({
       type: Number,
     }
   }],
+  month : {
+    type: Number,
+    default: new Date().getMonth() + 1
+  },
   date: {
     type: Date,
     default: Date.now

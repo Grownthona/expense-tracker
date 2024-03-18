@@ -68,11 +68,11 @@ router.route('/addcatagory').post(async(req, res) => {
 
 
   router.route('/addexpense').post(async(req, res) => {
-    const {user, category, amount, description,paymentmethod,location,date} = req.body;
+    const {user, category, amount,budget, description,paymentmethod,location,date} = req.body;
     const { month, year } = extractMonthAndYearFromDate(date);
 
     try {
-      const newExpense = new Expense({user, category, amount, description,paymentmethod,location,month,year,date});
+      const newExpense = new Expense({user, category, amount,budget, description,paymentmethod,location,month,year,date});
       await newExpense.save();
       return res.status(201).json('New Expense added successfully' );
     } catch(err){
@@ -84,12 +84,20 @@ router.route('/addcatagory').post(async(req, res) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;     
-    const startOfMonth = new Date(currentYear, currentMonth - 1, 1); 
-    const endOfMonth = new Date(currentYear, currentMonth, 0);
+    
 
-    const monthlyExoense = await Expense.find({ user: userId , date: { $gte: startOfMonth, $lte: endOfMonth }});
+    const monthlyExpense = await Expense.find({ user: userId , month: currentMonth, year: currentYear}).
+    then(result => {
+      if(result && result.length > 0){
+        return res.json(result);
+      }else{
+        return res.status(404).json({ message : "Not found"});
+      }
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    });
 
-    res.json({monthlyExoense});
 
   });
   module.exports = router;

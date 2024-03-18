@@ -7,6 +7,19 @@ const bodyParser = require("body-parser");
 
 router.use(bodyParser.json());
 
+function getMonthName(month) {
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  for(let i=0;i<monthNames.length;i++){
+    if(monthNames[i] === month){
+      return i+1;
+    }
+  }
+  return -1; // Adjust index to match conventional month numbering
+}
+
 router.route('/addnewcategory').post( async (req, res) => {
   const {user,category,amount} = req.body;
   console.log(user+' '+category+' '+amount);
@@ -55,7 +68,34 @@ router.route('/addbudget').post(async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+router.route('/monthlybudget').post(checkLogin,async (req, res) => {
+  const userId = req.userId;
+  const monthName = req.body.selectedMonth;
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = getMonthName(monthName);
 
+
+  try {
+    console.log(currentMonth);
+    const AllMonthBudget = await Budget.find({ user: userId, month : currentMonth }).
+    then(result => {
+      
+      if(result && result.length > 0){
+        return res.json(result);
+      }else{
+        return res.status(404).json({ message : "Not found"});
+      }
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    });
+  
+  } catch(err){
+    return res.status(400).json(err);
+  }
+  
+});
 router.route('/').get(checkLogin,async (req, res) => {
 
     const userId = req.userId;
@@ -67,8 +107,9 @@ router.route('/').get(checkLogin,async (req, res) => {
 
     const categories = await Catagory.find({});
     const userCategory = await UserCategory.find({ user: userId });
+    
     const CurrentMonthBudget = await Budget.findOne({ user: userId, date: { $gte: startOfMonth, $lte: endOfMonth } });
-    const budgetId = CurrentMonthBudget._id;
+    
 
     if(CurrentMonthBudget){
       //The user has current month budget
