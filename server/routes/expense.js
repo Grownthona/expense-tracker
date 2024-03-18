@@ -72,7 +72,7 @@ router.route('/addcatagory').post(async(req, res) => {
     const { month, year } = extractMonthAndYearFromDate(date);
 
     try {
-      const newExpense = new Expense({user, category, amount,budget, description,paymentmethod,location,month,year,date});
+      const newExpense = new Expense({ user, category, amount,budget, description,paymentmethod,location,month,year,date});
       await newExpense.save();
       return res.status(201).json('New Expense added successfully' );
     } catch(err){

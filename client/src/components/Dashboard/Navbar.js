@@ -48,6 +48,11 @@ export default function Navbar(){
                             <p><span className="icon">💵</span>Expense</p>
                         </div>
                     </Link>
+                    <Link to={'/trackexpense'}>
+                        <div>
+                            <p>Track Expense</p>
+                        </div>
+                    </Link>
                     <div>
                         <p>{decodedToken}</p>
                     </div>

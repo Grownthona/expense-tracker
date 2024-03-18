@@ -56,7 +56,7 @@ export default function AddBudget({id,category,total,budget,currentamount}){
         x -= a;
       }
 
-        if(x + y < z){ 
+        if(x + y <= z){ 
         const updatedBudgets = budget.budgets.map(item => {
             if (item._id === id) {
                 return { ...item, amount: amount };

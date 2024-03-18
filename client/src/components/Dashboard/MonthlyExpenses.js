@@ -20,7 +20,7 @@ export default function MonthlyExpenses({expense, budget}){
                     
                 <p>Total Expense : {totalexpense}</p>
                     
-                {expense && expense.map((item,key)=> (
+                {expense.length>0 && expense.map((item,key)=> (
                 <li key={key}>
                   <p>Category: {item.category}</p>
                   <p>Amount: {item.amount}</p>

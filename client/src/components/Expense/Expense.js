@@ -5,6 +5,33 @@ import DeleteExpense from "./DeleteExpense";
 export default function Expense(){
 
     const [expenses, setExpenses] = useState([]);
+    const [totalBudget, setTotalBudget] = useState(0);
+    const [totalExpense, setTotalExpense] = useState(0);
+    useEffect(() => {
+      const fetchBudget = async () => {
+          try {
+            const token = localStorage.getItem('token');
+            if(token){
+            const response = await fetch(`http://localhost:5000/budget`, {
+              headers: {
+                  'Content-Type': 'application/json', 
+                  'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            setTotalBudget(data.totalBudget);
+            //console.log(data);
+            localStorage.setItem('totalBudget', data.totalBudget);
+  
+          }
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        
+        fetchBudget();
+        
+    }, []);
 
     useEffect(() => {
         const fetchExpense = async () => {
@@ -29,11 +56,22 @@ export default function Expense(){
           fetchExpense();
           
         }, []);
+
+        useEffect(() => {
+          if(expenses.length>0){
+            const totalExpense = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+            setTotalExpense(totalExpense);
+          }
+          
+        }, [expenses]);
     return(
         <div>
             <div>
                 <AddExpense/>
-                {expenses && expenses.map((item,index)=>(
+
+                <p>Total Budget : {totalBudget}</p>
+                <p>Remaining : {totalBudget - totalExpense}</p>
+                {expenses.length>0 && expenses.map((item,index)=>(
                    <div key={index}>
                     <p>{item.category}</p>
                     <p>{item.amount}</p>

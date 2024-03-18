@@ -35,7 +35,7 @@ export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
             console.error('Error:', error);
         }
     }else{
-        alert("Your current budget will exceed to Total Budget Amount");
+        alert("Your current budget will exceed to Total Budget Amount. Your remaining ");
     }
     }
     return(

@@ -51,6 +51,8 @@ export default function AddExpense(){
           const data = await response.json();
           setBudgetsList(data.budgets);
           console.log(data.budgets);
+          
+
           const dict = {};
           data.budgets.forEach(item => {
             dict[item.category] = item.amount;
@@ -118,8 +120,8 @@ export default function AddExpense(){
                     {categoryBudget && <p>"The selected category Budget is : {categoryBudget}</p>}
                     <input type="text" placeholder="Expense Amount" value={amount} onChange={handleExpenseAmount} />
                     <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <input type="text" placeholder="Payment Method" value={paymentmethod} onChange={(e) => setPaymentMethod(e.target.value)} />
-                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              
+                    <InputLabel id="demo-simple-select-label">Payment Method</InputLabel>
                     <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={paymentmethod} label="Payment Method" onChange={(e) => setPaymentMethod(e.target.value)}>
                         <MenuItem value={"Cash"}>Cash</MenuItem>
                         <MenuItem value={"Card"}>Card</MenuItem>

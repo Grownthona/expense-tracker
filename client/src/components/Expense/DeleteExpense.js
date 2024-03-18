@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function DeleteExpense({id}){
+export default function DeleteExpense({ id }){
     const handleDelete = async() => {
         try {
             const response = await fetch('http://localhost:5000/expense/deleteexpense', {
@@ -8,7 +8,7 @@ export default function DeleteExpense({id}){
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({id}),
+              body: JSON.stringify({ id }),
             });
             const data = await response.json();
             console.log(data);

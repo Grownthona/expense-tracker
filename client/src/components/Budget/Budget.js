@@ -52,7 +52,9 @@ function Budget() {
       <ul>
         {budget && (
           <li key={budget._id}>
+
             <p>Total Budget: {budget.totalBudget}</p>
+            <p>Remaining Budget: {parseFloat(budget.totalBudget)-parseFloat(totalBudget)}</p>
             <p>Date: {budget.date}</p>
             <ul>
               {budgetlist.map((item,key)=> (

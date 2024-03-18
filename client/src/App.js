@@ -5,6 +5,7 @@ import SignUp from './components/Authentication/SignUp';
 import Budget from './components/Budget/Budget';
 import Expense from './components/Expense/Expense';
 import Dashboard from './components/Dashboard/Dashboard';
+import ExpenseTracking from './components/ExpenseTracking/ExpenseTracking';
 
 function App() {
   const isAuthenticated = localStorage.getItem('token');
@@ -26,6 +27,7 @@ function App() {
           <Route path='/user/signup' element = {<SignUp/>}></Route>
           <Route path='/budget' element = {<Budget/>}></Route>
           <Route path='/expense' element = {<Expense/>}></Route>
+          <Route path='/trackexpense' element={<ExpenseTracking/>}></Route>
         </Routes>
       </Router>
     </div>
