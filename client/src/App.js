@@ -18,11 +18,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          {isAuthenticated ? 
-            <Route path='/' element={<Dashboard/>}></Route>
-          :
-            <Route path='/' element={<Home/>}></Route>
-          }
+          <Route path='/' element={<Home/>}></Route>
+          <Route path='/dashboard' element={<Dashboard/>}></Route>
           <Route path='/user/signin' element={<SignIn/>}></Route>
           <Route path='/user/signup' element = {<SignUp/>}></Route>
           <Route path='/budget' element = {<Budget/>}></Route>

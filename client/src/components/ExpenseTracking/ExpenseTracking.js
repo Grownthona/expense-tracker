@@ -4,20 +4,38 @@ import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import { LineChart } from '@mui/x-charts/LineChart';
 
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 import ExportFile from "./ExportFile";
 
 export default function ExpenseTracking(){
+    const [value, setValue] = useState([10, 20]);
     const [expenses, setExpenses] = useState([]);
+    const [tempexpenses, setTempExpenses] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [chartDateData, setChartDateData] = useState([]);
-    const [categoryFilter, setCategoryFilter] = React.useState('');
+    const [categoryFilter, setCategoryFilter] = useState('');
     
     const handleChange = (e) => {
+      const categoryName = e.target.value;
       setCategoryFilter(e.target.value);
+      const filteredData = tempexpenses.filter(expense => expense.category === categoryName);
+      setExpenses(filteredData);
+    };
+    const handleSliderChange = (event, newValue) => {
+      setValue(newValue);
+      const filtered = tempexpenses.filter(item => {
+        const itemDate = new Date(item.date).getDate();
+        const rangeStartDate = new Date(newValue[0]);
+        const rangeEndDate = new Date(newValue[1]);
+        return itemDate >= rangeStartDate && itemDate <= rangeEndDate;
+      });
+      setExpenses(filtered);
     };
 
     function getMonthName(month) {
@@ -35,6 +53,11 @@ export default function ExpenseTracking(){
     }
 
     const Total = localStorage.getItem('totalBudget');
+
+    function valuetext(value) {
+      return `${value} ${Currentmonth} `;
+    }
+
     useEffect(() => {
         const fetchExpense = async () => {
             try {
@@ -79,8 +102,9 @@ export default function ExpenseTracking(){
               setChartData(chartData);
               //console.log("Chart Data:", chartData)
              
-              console.log(expensesWithRemaining);
+              //console.log(expensesWithRemaining);
               setExpenses(expensesWithRemaining);
+              setTempExpenses(expensesWithRemaining);
             }
             } catch (error) {
               console.error(error);
@@ -130,14 +154,25 @@ export default function ExpenseTracking(){
 
       return(
         <div>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select" value={categoryFilter} label="Category" onChange={handleChange}>
-              <MenuItem value={categoryFilter}>{categoryFilter}</MenuItem>
+          <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={categoryFilter} label="Category" onChange={handleChange}>
+            {chartData && chartData.map((item,index) => (
+              <MenuItem key={index} value={item.label}>{item.label}</MenuItem>
+            ))}
           </Select>
-
+          </FormControl>
+          <Box sx={{ width: 250 }}>
+            Date Range
+          <Slider getAriaLabel={() => 'Expense Date range'} value={value} onChange={handleSliderChange} valueLabelDisplay="auto"
+              getAriaValueText={valuetext} min={0}
+              max={30}
+            />
+            </Box>
+            {expenses.length >0 && 
           <ExportFile expenses={expenses}/>
-          
-          {expenses && expenses.map((item,index)=>(
+            }
+          {expenses.length>0 && expenses.map((item,index)=>(
             <div key={index}>
               <p>{item.category}</p>
               <p>{item.budget}</p>
@@ -146,40 +181,40 @@ export default function ExpenseTracking(){
             </div>
           ))}
           <PieChart
-      series={[
-        {
-          data: chartData,
-          cx: 300,
-          cy: 200,
-          innerRadius: 50,
-          outerRadius: 100,
-          arcLabel: getArcLabel,
-        },
-      ]}
-      sx={{
-        [`& .${pieArcLabelClasses.root}`]: {
-          fill: 'white',
-          fontWeight: 'bold',
-        },
-      }}
-      width={600}
-      height={600}
-      slotProps={{
-        legend: { hidden: false },
-      }}
-    >
-      <PieCenterLabel>Total Budget</PieCenterLabel>
-      <PieCenterLabel2>{Total}</PieCenterLabel2>
-    </PieChart>
+            series={[
+              {
+                data: chartData,
+                cx: 300,
+                cy: 200,
+                innerRadius: 50,
+                outerRadius: 100,
+                arcLabel: getArcLabel,
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: 'white',
+                fontWeight: 'bold',
+              },
+            }}
+            width={600}
+            height={600}
+            slotProps={{
+              legend: { hidden: false },
+            }}
+          >
+            <PieCenterLabel>Total Budget</PieCenterLabel>
+            <PieCenterLabel2>{Total}</PieCenterLabel2>
+          </PieChart>
 
-    <LineChart
-      width={500}
-      height={300}
-      series={[
-        { curve: "linear",data: chartDateData, label: "Expense", color:"orange"},
-      ]}
-      xAxis={[{ scaleType: 'point', data: xLabels }]}
-    />
+          <LineChart
+            width={500}
+            height={300}
+            series={[
+              { curve: "linear", data: chartDateData, label: "Expense", color: "orange" },
+            ]}
+            xAxis={[{ scaleType: 'point', data: xLabels }]}
+          />
 
         </div>
     );
