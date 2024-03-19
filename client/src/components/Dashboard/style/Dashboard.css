@@ -11,14 +11,15 @@
 }
 .dashboard-navbar{
     width: 20%;
-    border: 1px solid salmon;
 }
 
 .dashboard-board{
-    width: 78%;
+    width: auto;
     padding: 2rem;
     border: 1px solid rgb(117, 17, 6);
 }
+
 .month-names{
     cursor: pointer;
 }
+

@@ -1,67 +1,95 @@
-import React,{useState,useEffect} from 'react';
-import { Navigate ,Link} from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import logo from './images/logo_02.png';
+import React from "react";
+
+import { useNavigate,Link} from 'react-router-dom';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+//import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import TocOutlinedIcon from '@mui/icons-material/TocOutlined';
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
+import logo from './images/logo.png'
 import './Navbar.css';
 
-
-export default function Navbar(){
-    const [decodedToken, setDecodedToken] = useState(null);
-
-    const decodeToken = (token) => {
-        const decoded = jwtDecode(token);
-        setDecodedToken(decoded.userId);
-    };
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (token) {
-          decodeToken(token);
-        }
-      }, []); 
-
+export default function Sidebar(){
+    const navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        return <Navigate to="/user/signin" />;
-
+        const token = localStorage.getItem('token');
+        if(token){
+            localStorage.removeItem('token');
+        }
+        navigate("/");
       };
-      
+
     return(
-        
-        <div>
-            <div className='navbar'>
-                <div className='navbar-container'>
-                    <div className='logo-items'>
-                        <div className='img-box'>
-                            <img src={logo} alt='logo'/>
-                        </div>
-                    </div>
-    
-                    <Link to={'/budget'}>
-                        <div className='nav-items'>
-                            <p><span className="icon">📦</span>Catagories</p>
-                        </div>
-                    </Link>
-                    <Link to={'/expense'}>
-                        <div className='nav-items'>
-                            <p><span className="icon">💵</span>Expense</p>
-                        </div>
-                    </Link>
-                    <Link to={'/trackexpense'}>
-                        <div>
-                            <p>Track Expense</p>
-                        </div>
-                    </Link>
-                    <div>
-                        <p>{decodedToken}</p>
-                    </div>
-                    <button onClick={handleLogout}>
-                        log out
+        <div className="sidebar">
+            <header className="sidebar-header">
+                <img src={logo} alt="logo" />
+            </header>
+            <nav>
+                <Link to={'/dashboard'}>
+                    <button>
+                        <span>
+                            <HomeOutlinedIcon />
+                            <span>Dashboard</span>
+                        </span>
                     </button>
-                </div>
-            </div>
-        </div>
-        
+                </Link>
+
+                <Link to={'/budget'}>
+                    <button>
+                        <span>
+                            <TocOutlinedIcon />
+                            <span>Category</span>
+                        </span>
+                    </button>
+                </Link>
+                <Link to={'/expense'}>
+                    <button>
+                        <span>
+                            <PaidOutlinedIcon />
+                            <span>Expense</span>
+                        </span>
+                    </button>
+                </Link>
+
+                <Link to={'/trackexpense'}>
+                    <button>
+                        <span>
+                            <AccountBalanceWalletOutlinedIcon />
+                            <span>Budget Track</span>
+                        </span>
+                    </button>
+                </Link>
+
+                <button>
+                    <span>
+                        <FavoriteBorderIcon>
+                            <em></em>
+                        </FavoriteBorderIcon>
+                        <span>Notifications</span>
+                    </span>
+                </button>
+
+                <button>
+                    <span>
+                        <AddBoxOutlinedIcon />
+                        <span>Add</span>
+                    </span>
+                </button>
+
+                
+
+                <button onClick={handleLogout}>
+                    <span>
+                        <LogoutIcon />
+                        <span>Log Out</span>
+                    </span>
+                </button>
+            </nav>
+    </div>
     )
 }
