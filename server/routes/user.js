@@ -66,6 +66,7 @@ router.route('/signup').post(async(req, res) => {
 
 
         const token = jwt.sign({ userId : userIdString }, 'rs8Hjjs&hbsg56');
+  
         
         res.status(200).json({ token });
       } else {

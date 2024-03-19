@@ -13,7 +13,6 @@ export default function SignUp(){
     const [email, setEmail] = useState(' ');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState(' ');
-    const [registered, setRegister] = useState(false);
    
     //const [message, setMessage] = useState('');
     const [isValid, setIsValid] = useState(true);
