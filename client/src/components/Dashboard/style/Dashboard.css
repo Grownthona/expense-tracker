@@ -48,6 +48,10 @@
         width: 550px;
     }
 
+    .budget-expense{
+        margin-top: 1rem;
+        width: 80%;
+    }
 @media (min-width: 768px) {
     .all-summary-box {
       min-width: 170px;

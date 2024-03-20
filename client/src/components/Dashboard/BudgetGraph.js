@@ -9,7 +9,7 @@ export default function BudgetGraph({budgets,budgetCategory}){
     }
     return(
         <div>
-            <BarChart colors={["orange"]} width={600} height={300} series={[{ data: uData, label: 'Budgets', type: 'bar' }]} xAxis={[{ scaleType: 'band', data: xLabels }]}>
+            <BarChart colors={["lightBlue"]} width={600} height={300} series={[{ data: uData, label: 'Budgets', type: 'bar' }]} xAxis={[{ scaleType: 'band', data: xLabels }]}>
                 <BarPlot />
             </BarChart>
         </div>

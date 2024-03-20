@@ -10,6 +10,8 @@ import DashboardBudgetList from "./DashboardBudgetList";
 import SummarizedGraph from "./SummarizedGraph";
 import CustomCalendar from "./CustomCalendar";
 import BudgetGraph from "./BudgetGraph";
+import BudgetVsExpense from "./BudgetVsExpense";
+import ExpenseTable from "./ExpenseTable";
 
 import './style/Dashboard.css';
 
@@ -77,7 +79,7 @@ export default function Dashboard(){
                 const dates = data.map(item => item.date.split('T')[0]); //// Extracting dates without time from the list
                 setHighlightedDays(dates);
                 setExpense(data);
-                //console.log(data);
+                console.log(data);
             }
             } catch (error) {
                 console.error('Error:', error);
@@ -153,6 +155,12 @@ export default function Dashboard(){
                         </div>
                         <div>
                             <DashboardBudgetList budgets={budgetList}/>
+                        </div>
+                        <div className="budget-expense">
+                            <BudgetVsExpense budgets={budget} budgetCategory={budgetCategory} expense={expense}/>
+                        </div>
+                        <div className="expense-table">
+                            <ExpenseTable expense={expense}/>
                         </div>
                     </div>
                 </div>
