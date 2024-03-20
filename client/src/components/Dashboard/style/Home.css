@@ -70,7 +70,7 @@
     color: #fff;
     cursor: pointer;
     display: inline-flex;
-    fill: #000;
+    fill: #ffffff;
     font-size: 16px;
     height: 48px;
     font-weight: 500;
@@ -89,19 +89,21 @@
   }
   
   .button-58:focus {
-    color: #171e29;
+    color: #ffffff;
   }
   
   .button-58:hover {
-    background-color: #f88d28;
-    border-color: #f88d28;
-    fill: #f88d28;
+    background-color: #a000a0;
+    border-color:  #a000a0;
+    fill:  #a000a0;
+    color: white;
   }
   
   .button-58:active {
-    background-color: #3385ff;
-    border-color: #3385ff;
-    fill: #06f;
+    background-color: #a000a0;
+    border-color:  #a000a0;
+    fill:  #a000a0;
+    color: white;
   }
 
   @media (min-width: 768px) {

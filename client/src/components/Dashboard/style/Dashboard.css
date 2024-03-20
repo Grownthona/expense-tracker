@@ -7,7 +7,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items:flex-start;
 }
 .dashboard-navbar{
     width: 20%;
@@ -21,5 +20,9 @@
 
 .month-names{
     cursor: pointer;
+}
+
+.scroll-month{
+    margin: auto;
 }
 

@@ -50,15 +50,16 @@ router.route('/addcatagory').post(async(req, res) => {
   }
   router.route('/monthlyexpense').post(checkLogin,async(req, res) => {
 
-    const monthName = req.body.selectedMonth;
+    const monthName = req.body.month;
     const userId = req.userId;
     const month = getMonthName(monthName);
+    const year = req.body.year;
     
-    const currentYear = new Date().getFullYear();
+    //const currentYear = new Date().getFullYear();
     
     try {
       //console.log(month);
-      const expense = await Expense.find({user:userId,month: month,year:currentYear });
+      const expense = await Expense.find({user:userId,month: month,year:year });
       return res.json(expense);
     } catch(err){
       return res.status(400).json(err);

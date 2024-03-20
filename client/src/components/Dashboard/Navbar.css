@@ -63,7 +63,7 @@ a{
   width: 100%;
   color: black;
 }
-a :hover{
+.sidebar a :hover{
   width: 100%;
   color: black;
 }

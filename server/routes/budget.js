@@ -70,15 +70,14 @@ router.route('/addbudget').post(async (req, res) => {
 });
 router.route('/monthlybudget').post(checkLogin,async (req, res) => {
   const userId = req.userId;
-  const monthName = req.body.selectedMonth;
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
+  const monthName = req.body.month;
+  //const currentDate = new Date();
+  const year = req.body.year;
   const currentMonth = getMonthName(monthName);
 
-
   try {
-    console.log(currentMonth);
-    const AllMonthBudget = await Budget.find({ user: userId, month : currentMonth }).
+
+    const AllMonthBudget = await Budget.find({ user: userId, month : currentMonth ,year:year}).
     then(result => {
       
       if(result && result.length > 0){
@@ -94,6 +93,7 @@ router.route('/monthlybudget').post(checkLogin,async (req, res) => {
   } catch(err){
     return res.status(400).json(err);
   }
+  
   
 });
 router.route('/').get(checkLogin,async (req, res) => {
