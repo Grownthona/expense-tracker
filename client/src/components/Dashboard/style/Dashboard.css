@@ -5,6 +5,7 @@
 }
 .dashboard-container{
     display: flex;
+    
     flex-wrap: wrap;
     justify-content: space-between;
 }
@@ -15,7 +16,6 @@
 .dashboard-board{
     width: auto;
     padding: 2rem;
-    border: 1px solid rgb(117, 17, 6);
 }
 
 .month-names{
@@ -23,6 +23,36 @@
 }
 
 .scroll-month{
-    margin: auto;
+    display: flex;
+    justify-content: center;
 }
+.dashboard-content{
+    margin-left: 19%;
+    width: 80%;
+    margin-top: 1rem;
+}
+.dashboard-content-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+    .all-summary-box{
+        width: 600px;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px 5px rgb(219, 219, 219);
+    }
 
+    .budget-graph{
+        width: 550px;
+    }
+
+@media (min-width: 768px) {
+    .all-summary-box {
+      min-width: 170px;
+    }
+    .budget-graph{
+        min-width: 150px;
+    }
+  }

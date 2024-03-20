@@ -1,19 +1,30 @@
 import React,{useState,useEffect} from "react";
 import Navbar from "./Navbar";
 import Topbar from "./Topbar";
-//import MonthSlider from "./MonthSlider";
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
+import DashboardBudgetList from "./DashboardBudgetList";
+import SummarizedGraph from "./SummarizedGraph";
+import CustomCalendar from "./CustomCalendar";
+import BudgetGraph from "./BudgetGraph";
+
 import './style/Dashboard.css';
+
 export default function Dashboard(){
 
     const [value, setValue] = useState('');
     const [date, setDate] = useState([]);
     const [expense, setExpense] = useState([]);
     const [budget, setBudget] = useState([]);
+    const [budgetList, setBudgetList] = useState([]);
+    const [budgetCategory, setBudgetCategory] = useState([]);
+    const [highlightedDays,setHighlightedDays] = useState([]);
+    const [totalBudget,setTotalBudget] = useState(0.0);
     const [monthyearList, setmonthyearList] = useState([]);
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -25,14 +36,13 @@ export default function Dashboard(){
         ];
         return monthNames[month - 1]; // Adjust index to match conventional month numbering
     }
+
     useEffect(() => {
         const dateObjects = [];
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth() + 1;
-
     let f=0;
-
     for (let year = 2023; year <= currentYear; year++) {
         if(f){
             break;
@@ -50,7 +60,6 @@ export default function Dashboard(){
     },[]);
 
     useEffect(() => {
-
         const retrieveData = async() =>{
             try {
                 const token = localStorage.getItem('token');
@@ -64,22 +73,24 @@ export default function Dashboard(){
                   body: JSON.stringify({ month: date.date,year:date.year }),
                 });
                 const data = await response.json();
+
+                const dates = data.map(item => item.date.split('T')[0]); //// Extracting dates without time from the list
+                setHighlightedDays(dates);
                 setExpense(data);
-                console.log(data);
-              }
-              } catch (error) {
+                //console.log(data);
+            }
+            } catch (error) {
                 console.error('Error:', error);
-              }
-            
+            }
         }
         if(date.date){
             retrieveData();
         }
-       
       }, [date]);
 
-      useEffect(() => {
+      
 
+    useEffect(() => {
         const retrieveBudget = async() =>{
             try {
                 const token = localStorage.getItem('token');
@@ -92,37 +103,58 @@ export default function Dashboard(){
                   },
                   body: JSON.stringify({ month: date.date,year:date.year }),
                 });
-                const data = await response.json();  
-                setBudget(data);
-                console.log(data[0]);
-              }
-              } catch (error) {
+                const data = await response.json();
+
+                setBudgetList(data[0].budgets);
+
+                const budgetCategories = data[0].budgets.map(item => item.category);
+                const budgets = data[0].budgets.map(item => item.amount);
+
+                setBudget(budgets);
+                setBudgetCategory(budgetCategories);
+                setTotalBudget(data[0].totalBudget);
+                }
+            } catch (error) {
                 console.error('Error:', error);
-              }
             }
+        }
         if(date.date){
             retrieveBudget();
         }
-       
-      }, [date]);
+    }, [date]);
    
 
     return(
         <div className="dashboard">
             <Topbar />
+            <div className="scroll-month">
+                <Box sx={{ maxWidth: { xs: 220, sm: 550 }, bgcolor: 'background.paper' }}>
+                    <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
+                        {monthyearList && monthyearList.map((item,index) => (
+                            <Tab key={index} label={item.date+' '+item.year} onClick={()=>setDate(item)}/>
+                        ))}
+                    </Tabs>
+                </Box>
+            </div>
             <div className="dashboard-container">
                 <div className="dashboard-navbar">
                     <Navbar />
                 </div>
-                <div className="scroll-month">
-                    <Box sx={{ maxWidth: { xs: 220, sm: 550 }, bgcolor: 'background.paper' }}>
-                        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="scrollable auto tabs example">
-                            {monthyearList && monthyearList.map((item,index) => (
-                                <Tab key={index} label={item.date+' '+item.year} onClick={()=>setDate(item)}/>
-                            ))}
-                        </Tabs>
-                    </Box>
-                    <p>{date.date+' '+date.year}</p>
+                <div className="dashboard-content">
+                    <div className="dashboard-content-container">
+                        <div className="all-summary-box">
+                            <SummarizedGraph totalBudget={totalBudget} expense={expense}/>
+                        </div>
+                        <div className="calendar-box">
+                            <CustomCalendar highlightedDays={highlightedDays}/>
+                        </div>
+                        <div className="budget-graph">
+                            <BudgetGraph budgets={budget} budgetCategory={budgetCategory}/>
+                        </div>
+                        <div>
+                            <DashboardBudgetList budgets={budgetList}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

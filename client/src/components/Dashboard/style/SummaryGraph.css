@@ -1,0 +1,26 @@
+
+.summary-chart-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-summary-text{
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 10px;
+    width: 200px;
+    padding: 1rem;
+    text-align: center;
+    font-family: "Afacad", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.chart-summary-text-another{
+    padding: 1rem;
+    margin-top: 1em;
+    font-family: "Afacad", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+}
