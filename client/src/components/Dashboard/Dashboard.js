@@ -15,6 +15,7 @@ import ExpenseTable from "./ExpenseTable";
 
 import './style/Dashboard.css';
 
+
 export default function Dashboard(){
 
     const [value, setValue] = useState('');
@@ -26,6 +27,7 @@ export default function Dashboard(){
     const [highlightedDays,setHighlightedDays] = useState([]);
     const [totalBudget,setTotalBudget] = useState(0.0);
     const [monthyearList, setmonthyearList] = useState([]);
+
     
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -76,7 +78,7 @@ export default function Dashboard(){
                 });
                 const data = await response.json();
 
-                const dates = data.map(item => item.date.split('T')[0]); //// Extracting dates without time from the list
+                const dates = data.map(item => item.date.split('T')[0]);
                 setHighlightedDays(dates);
                 setExpense(data);
                 console.log(data);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AddBudget from './AddBudget';
 import AddNewCategory from './AddNewCategory';
-
+import Navbar from "./Navbar";
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
@@ -46,28 +46,9 @@ function Budget() {
   }
 
   return (
-    <div>
-      {budget && <AddNewCategory user={budget.user} monthlyBudget={budget.totalBudget} spendingBudget={totalBudget}/>}
-      <h2>Budget List</h2>
-      <ul>
-        {budget && (
-          <li key={budget._id}>
 
-            <p>Total Budget: {budget.totalBudget}</p>
-            <p>Remaining Budget: {parseFloat(budget.totalBudget)-parseFloat(totalBudget)}</p>
-            <p>Date: {budget.date}</p>
-            <ul>
-              {budgetlist.map((item,key)=> (
-                <li key={key}>
-                  <p>Category: {item.category}</p>
-                  <p>Amount: {item.amount}</p>
-                  <AddBudget id={item._id} category={item.category} currentamount={item.amount} total={budget.totalBudget} budget={budget}/>
-                </li>
-              ))}
-            </ul>
-          </li>
-        )}
-      </ul>
+    <div className='budget'>
+      <Navbar/>
     </div>
   );
 }
