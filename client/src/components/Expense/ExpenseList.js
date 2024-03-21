@@ -137,8 +137,8 @@ export default function ExpenseList({expense}) {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? expense.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : expense
+            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : rows
           ).map((row,index) => (
             <StyledTableRow key={row._id}>
               <StyledTableCell component="th" scope="row">

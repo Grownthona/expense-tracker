@@ -124,12 +124,12 @@ export default function AddExpense(){
                     <Box sx={{ minWidth: 150 ,height:450}}>
                       <h3>Add Expense</h3>
                       <FormControl variant="standard" fullWidth>
-                        <InputLabel id="demo-simple-select-standard-label" style={{marginTop:"1rem"}}>Category</InputLabel>
-                        <Select fullWidth labelId="demo-simple-select-standard-label" id="demo-simple-select" style={{marginTop:"4rem"}} value={category} label="Category" onChange={handleCategoryChange}>
+                        <Select fullWidth labelId="demo-simple-select-standard-label" id="demo-simple-select" style={{marginTop:"2rem"}} value={category} label="Category" onChange={handleCategoryChange}>
                           {budgetlist.map((budget, index) => (
                             <MenuItem key={index} value={budget.category}>{budget.category}</MenuItem>
                           ))};
                         </Select>
+                        {budget && <p>"The selected category Budget is : {budget}</p>}
                         <TextField id="standard-basic" style={{marginTop:"1rem"}} label="Expense Amount" variant="standard" value={amount} onChange={handleExpenseAmount}/>
                         <TextField id="standard-basic" style={{marginTop:"1rem"}}  label="Description" variant="standard" value={description} onChange={(e) => setDescription(e.target.value)}/>
                           <Select fullWidth labelId="demo-simple-select-label" style={{marginTop:"2rem"}} id="demo-simple-select" value={paymentmethod} label="Payment Method" onChange={(e) => setPaymentMethod(e.target.value)}>

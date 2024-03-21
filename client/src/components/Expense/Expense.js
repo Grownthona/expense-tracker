@@ -65,7 +65,7 @@ export default function Expense(){
             <div className="expense-content">
               <h1>Expenses</h1>
               <AddExpense/>
-              <ExpenseList expense={expenses}/>
+              {expenses.length>0 &&<ExpenseList expense={expenses}/>}
             </div>
         </div>
     );
