@@ -66,5 +66,111 @@ Start the client
   npm start
 ```
 
+# DB Dumps
+
+##budgetSchema:
+
+const budgetSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  totalBudget :{ 
+    type: Number 
+  },
+  budgets: [{
+    category: {
+      type: String,
+      required: true
+    },
+    amount: {
+      type: Number,
+    }
+  }],
+  month : {
+    type: Number,
+    default: new Date().getMonth() + 1
+  },
+  year : {
+    type: Number
+    default: new Date().getFullYear()
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+##categorySchema:
+
+const categorySchema = new mongoose.Schema({
+  name: String
+});
+
+##categorySchema:
+
+const expenseSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  category :{ 
+    type: String,
+    required: true 
+  },
+  amount :{
+    type : Number,
+    required: true
+  },
+  budget :{
+    type : Number,
+    //required: true
+  },
+  description :{
+    type : String,
+  },
+  paymentmethod :{
+    type : String,
+  },
+  location :{
+    type : String,
+  },
+  month : {
+    type : String,
+  },
+  year : {
+    type : String,
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+## User Added Category Schema
+const usercategorySchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+    },
+    category: {
+      type: String,
+      required: true
+    },
+    amount: {
+      type: Number,
+    }
+});
+
+## User Schema
+const userSchema = new mongoose.Schema({
+    email: String,
+    username: String,
+    password: String
+  });
+  
 
 
