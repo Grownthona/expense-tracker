@@ -2,12 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 
 import Dialog from '@mui/material/Dialog';
-import { Button } from '@mui/material';
+import { Box } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import './Budget.css';
 
 export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
     const [open, setOpen] = useState(false);
-    const [category,setCategory] = useState('');
-    const [amount,setAmount] = useState('');
+    const [category,setCategory] = useState(' ');
+    const [amount,setAmount] = useState(' ');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -15,7 +17,8 @@ export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
     const handleClose = () => {
         setOpen(false);
     };
-    const handleSubmit = async() => {
+    const handleSubmit = async(e) => {
+        e.preventDefault();
         let monthly = parseFloat(monthlyBudget);
         let spending = parseFloat(spendingBudget);
         let newAmount = parseFloat(amount);
@@ -30,7 +33,8 @@ export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
               body: JSON.stringify({ user, category, amount }),
             });
             const data = await response.json();
-            console.log(data);
+            alert(data);
+            //setOpen(false);
            } catch (error) {
             console.error('Error:', error);
         }
@@ -40,16 +44,14 @@ export default function AddNewCategory({ user ,monthlyBudget , spendingBudget}){
     }
     return(
         <div>
-            <Button onClick={handleClickOpen}>Add New Category</Button>
-            <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 0,width: '40%',height:'60%' ,borderRadius: '16px' } }} maxWidth="xs">
-            <div>
-                <h2>Please add the total Price First</h2>
-                <form onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)}/>
-                    <input type="text" placeholder="Budget Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
-                    <button type="submit">Save</button>
-                </form>
-            </div>
+            <button className="button-37" onClick={handleClickOpen} role="button">Add New Category</button>
+            <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 10,width: '40%',height:'70%' ,borderRadius: '16px' } }} maxWidth="xs">
+                    <form onSubmit={handleSubmit}>
+                    <h3>Please Enter the Information</h3>
+                    <TextField fullWidth id="standard-basic" label="Category" variant="standard" style={{marginTop:"2rem"}} value={category} onChange={(e) => setCategory(e.target.value)}/>
+                    <TextField id="standard-basic" label="Budget Amount" variant="standard" style={{marginTop:"2rem"}} value={amount} onChange={(e) => setAmount(e.target.value)}/>
+                    <button className="button-37" style={{marginTop:"2rem"}} type='submit'>Save</button>
+                    </form>
             </Dialog>
         </div>
     );

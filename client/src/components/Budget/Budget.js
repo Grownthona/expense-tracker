@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import AddBudget from './AddBudget';
-import AddNewCategory from './AddNewCategory';
 import Navbar from "./Navbar";
+import './Budget.css'
+import BudgetList from './BudgetList';
 function Budget() {
   const [budget, setBudgets] = useState([]);
   const [budgetlist, setBudgetsList] = useState([]);
-  const [totalBudget, setTotalBudget] = useState(0.0);
   
   useEffect(() => {
     const fetchBudget = async () => {
@@ -20,7 +19,7 @@ function Budget() {
           });
           const data = await response.json();
           setBudgetsList(data.budgets);
-          console.log(data);
+          //console.log(data);
           setBudgets(data);
 
         }
@@ -33,13 +32,6 @@ function Budget() {
       
   }, []);
 
-  useEffect(() => {
-
-    const total = budgetlist.reduce((acc, budget) => acc + budget.amount, 0);
-    setTotalBudget(total);
-  }, [budgetlist]);
-
-
 
   if(!budget){
     return <p>No budgets available</p>;
@@ -49,6 +41,12 @@ function Budget() {
 
     <div className='budget'>
       <Navbar/>
+      <div className='budget-content'>
+        <h1>Categories</h1>
+        <div className='budget-table'>
+          <BudgetList budget={budget} budgetlist={budgetlist}/>
+        </div>
+      </div>
     </div>
   );
 }

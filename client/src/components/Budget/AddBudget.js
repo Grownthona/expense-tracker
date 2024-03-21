@@ -1,14 +1,15 @@
 import React from 'react';
 import { useState ,useEffect} from 'react';
-
+import EditIcon from '@mui/icons-material/Edit';
 import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
 
-
+import './Budget.css';
 export default function AddBudget({id,category,total,budget,currentamount}){
 
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState(currentamount);
-    const [totalBud,setTotal] = useState(0.0);
+    const [totalBud,setTotal] = useState(0);
     const [totalBudget, setTotalBudget] = useState(0.0);
 
 
@@ -25,6 +26,7 @@ export default function AddBudget({id,category,total,budget,currentamount}){
     }, [budget]);
   
     const handleTotal = async() => {
+        //e.preventDefault();
         // Alert the totalBudget value of the first budget item after updating
         budget.totalBudget = totalBud;
         try {
@@ -40,13 +42,14 @@ export default function AddBudget({id,category,total,budget,currentamount}){
               body: JSON.stringify({ budget }),
             });
             const data = await response.json();
-            console.log(data);
+            alert("Budget Added");
           } catch (error) {
             console.error('Error:', error);
         }
     }
     
     const handleSubmit = async() => {
+      //e.preventDefault();
       // checking if newly added budget will exceed the total budget or not
       let x = parseFloat(totalBudget);
       let y = parseFloat(amount);
@@ -76,7 +79,8 @@ export default function AddBudget({id,category,total,budget,currentamount}){
               body: JSON.stringify({ budget }),
             });
             const data = await response.json();
-            console.log(data);
+            alert(data);
+            //console.log(data);
           } catch (error) {
             console.error('Error:', error);
         }
@@ -88,25 +92,28 @@ export default function AddBudget({id,category,total,budget,currentamount}){
     }
 
     return(
-    <div style={{width:"100%",height:"100%"}}>   
-    <button onClick={handleClickOpen}>Add</button>
-    <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 0,width: '40%',height:'60%' ,borderRadius: '16px' } }} maxWidth="xs">
-    {total > 0 ? //when user has defined total budget
-        <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Category Name" value={category} readOnly={category}/>
-        <input type="text" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
-        <button type="submit">Add</button>
-        </form>
-        :
-        <div>
-            <h2>Please add the total Price First</h2>
-            <form onSubmit={handleTotal}>
-                <input type="text" placeholder="Total Budget" value={totalBud} onChange={(e) => setTotal(e.target.value)}/>
-                <button type="submit">Save</button>
-            </form>
+        <div>   
+          <span onClick={handleClickOpen}  style={{marginTop:"-10px",cursor:"pointer"}}><EditIcon/></span>
+          <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 10,width: '40%',height:'70%' ,borderRadius: '16px' } }} maxWidth="xs">
+          {total > 0 ? //when user has defined total budget
+            <div className='add-budget-form'>
+              <div className='add-budget-form-container'>
+                <h2 style={{textAlign:"center"}}>Add Budget</h2>
+                <TextField fullWidth id="standard-basic" style={{ marginTop: "2rem" }} value={category} label="Category" variant="standard" />
+                <TextField fullWidth id="standard-basic" style={{ marginTop: "2rem" }} variant="standard" label="Budget Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                <button className="button-37" style={{ marginTop: "2rem",width:"100%" }} onClick={handleSubmit} role="button">Add</button>
+              </div>
+            </div>
+            :
+            <div className='add-budget-form'>
+              <div className='add-budget-form-container'>
+                  <h2 style={{textAlign:"center"}}>Please add the total Price First</h2>
+                  <TextField id="standard-basic" label="Total Budget" style={{marginTop:"2rem"}} variant="standard" value={totalBud} onChange={(e) => setTotal(e.target.value)} />
+                  <button className="button-37" style={{marginTop:"2rem",marginLeft:"1rem"}} onClick={handleTotal} role="button">Save</button>
+              </div>
+            </div>
+          }
+          </Dialog>
         </div>
-        }
-    </Dialog>
-    </div>
     )
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-
+import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import img1 from './productivity.png';
 import back from './back.png';
@@ -10,6 +10,7 @@ import './styles/Authetication_style.css';
 
 
 export default function SignUp(){
+    const navigate = useNavigate();
     const [email, setEmail] = useState(' ');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState(' ');
@@ -26,7 +27,7 @@ export default function SignUp(){
     };
     
     const handleSignup = async (e) => {
-      e.preventDefault();
+        //e.preventDefault();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
         if(email === '' || emailRegex.test(email)===false){
@@ -48,7 +49,8 @@ export default function SignUp(){
           });
           const data = await response.json();
           if (response.status === 200) {
-            alert('User created successfully');
+            navigate("/user/signin");
+            //alert('User created successfully');
           } else {
             alert(data.message);
           }

@@ -153,7 +153,7 @@ export default function ExpenseTable({expense}) {
             ? expense.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : expense
           ).map((row,index) => (
-            <StyledTableRow key={row.index}>
+            <StyledTableRow key={index}>
               <StyledTableCell component="th" scope="row">
                 {row.category}
               </StyledTableCell>

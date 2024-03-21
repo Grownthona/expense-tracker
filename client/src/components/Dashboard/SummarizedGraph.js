@@ -90,11 +90,11 @@ export default function SummarizedGraph({totalBudget,expense}){
                         <div className="chart-summary-text">
                         <img src={imgdollar} alt="dollar"/>
                             <h3>Remaining Budget</h3>
-                            <h2 style={{color:"orange"}}>$ {Total - totalExpense}</h2>
+                            <h2 style={{ color : "orange" }}>৳ {Total - totalExpense}</h2>
                         </div>
                         <div className="chart-summary-text-another">
-                            <h4>Total Budget  : $ {Total}</h4>
-                            <h4>Total Expense : $ {totalExpense}</h4>
+                            <h4>Total Budget  :  {Total} ৳</h4>
+                            <h4>Total Expense :  {totalExpense} ৳</h4>
                         </div>
                     </div>
                 </div>
