@@ -68,7 +68,7 @@ Start the client
 
 # DB Dumps
 
-##budgetSchema:
+## BudgetSchema:
 
 const budgetSchema = new mongoose.Schema({
   user: {
@@ -102,13 +102,13 @@ const budgetSchema = new mongoose.Schema({
   }
 });
 
-##categorySchema:
+## CategorySchema:
 
 const categorySchema = new mongoose.Schema({
   name: String
 });
 
-##categorySchema:
+## CategorySchema:
 
 const expenseSchema = new mongoose.Schema({
   user: {
