@@ -1,4 +1,5 @@
 import React from "react";
+import './ExpenseTrack.css';
 export default function ExportFile({expenses}){
     function downloadCSV(csvContent) {
         const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -32,7 +33,7 @@ export default function ExportFile({expenses}){
       }
     return(
         <div>
-            <button onClick={handleDownloadClick}>Download CSV</button>
+          <button onClick={handleDownloadClick} className="button-37" role="button">Download Excel</button>
         </div>
     );
 }

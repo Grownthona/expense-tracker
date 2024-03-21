@@ -1,41 +1,40 @@
 import React, { useState ,useEffect} from "react";
-//import Dialog from '@mui/material/Dialog';
-import { Button } from "@mui/material";
+import Dialog from '@mui/material/Dialog';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
 
-import DatePicker from 'react-datepicker';
+import Box from '@mui/material/Box';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 
 export default function AddExpense(){
-    //const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     //const [budget, setBudgets] = useState([]);
     const [budgetlist, setBudgetsList] = useState([]);
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState(0.0);
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState(' ');
     const [paymentmethod, setPaymentMethod] = useState('');
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(' ');
     const [user,setUser] = useState('');
   
     const [categoryAmountDict, setCategoryAmountDict] = useState({});
     const [budget, setCategoryBudget] = useState(0.0);
-    const [date, setSelectedDate] = useState(null);
+   // const [date, setSelectedDate] = useState(null);
 
-    
-    const handleDateChange = date => {
-      setSelectedDate(date);
-    };
+  
 
-    /*const handleClickOpen = () => {
+    const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
-    };*/
+    };
   
     useEffect(() => {
     const fetchBudget = async () => {
@@ -75,8 +74,8 @@ export default function AddExpense(){
    
 
     const handleSubmit = async() =>{
-      if(date !== null && amount>0.0 && category !== ''){
-       
+      if(amount>0.0 && category !== ''){
+       const date = new Date();
       try {
         const response = await fetch('http://localhost:5000/expense/addexpense', {
           method: 'POST',
@@ -116,35 +115,34 @@ export default function AddExpense(){
       setCategoryBudget(categoryAmountDict[categoryExpense]);
     }
     return(
-        <div>
-            <Button>Add Expense</Button>
-            <p>{user}</p>
-                <form onSubmit={handleSubmit}>
-                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                    
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={category} label="Category" onChange={handleCategoryChange}>
-                      {budgetlist.map((budget, index) => (
-                        <MenuItem key={index} value={budget.category}>{budget.category}</MenuItem>
-                      ))}
-                      
-                    </Select>
-                    {budget && <p>"The selected category Budget is : {budget}</p>}
-                    <input type="text" placeholder="Expense Amount" value={amount} onChange={handleExpenseAmount} />
-                    <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-              
-                    <InputLabel id="demo-simple-select-label">Payment Method</InputLabel>
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={paymentmethod} label="Payment Method" onChange={(e) => setPaymentMethod(e.target.value)}>
-                        <MenuItem value={"Cash"}>Cash</MenuItem>
-                        <MenuItem value={"Card"}>Card</MenuItem>
-                    </Select>
-                    <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-                    
-                    <DatePicker selected={date} onChange={handleDateChange} dateFormat="MM/dd/yyyy"/>
-                    {date && (
-                      <p>Selected Date: {date.toLocaleDateString()}</p>
-                    )}
-                    <button type="submit">Add</button>
-                </form>
-        </div>
+      <div>
+        <button className="button-37" onClick={handleClickOpen} style={{marginTop:"3rem"}} role="button">Add Expense</button>
+          <Dialog open={open} onClose={handleClose} sx={{'& .MuiDialog-paper':{m: 0, p: 0,width: '90%',height:'100%' ,borderRadius: '16px' } }} maxWidth="xs">
+            
+              <div className="form-box">
+                <div className="form-box-container">
+                    <Box sx={{ minWidth: 150 ,height:450}}>
+                      <h3>Add Expense</h3>
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel id="demo-simple-select-standard-label" style={{marginTop:"1rem"}}>Category</InputLabel>
+                        <Select fullWidth labelId="demo-simple-select-standard-label" id="demo-simple-select" style={{marginTop:"4rem"}} value={category} label="Category" onChange={handleCategoryChange}>
+                          {budgetlist.map((budget, index) => (
+                            <MenuItem key={index} value={budget.category}>{budget.category}</MenuItem>
+                          ))};
+                        </Select>
+                        <TextField id="standard-basic" style={{marginTop:"1rem"}} label="Expense Amount" variant="standard" value={amount} onChange={handleExpenseAmount}/>
+                        <TextField id="standard-basic" style={{marginTop:"1rem"}}  label="Description" variant="standard" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                          <Select fullWidth labelId="demo-simple-select-label" style={{marginTop:"2rem"}} id="demo-simple-select" value={paymentmethod} label="Payment Method" onChange={(e) => setPaymentMethod(e.target.value)}>
+                            <MenuItem value={"Cash"}>Cash</MenuItem>
+                            <MenuItem value={"Card"}>Card</MenuItem>
+                          </Select>
+                        <TextField id="standard-basic" label="Location" variant="standard" style={{marginTop:"1rem"}} value={location} onChange={(e) => setLocation(e.target.value)} />
+                        <button className="button-37" onClick={handleSubmit} style={{marginTop:"2rem"}} role="button">Save</button>
+                      </FormControl>
+                    </Box>
+                </div>
+              </div>
+          </Dialog>
+      </div>
     );
 }

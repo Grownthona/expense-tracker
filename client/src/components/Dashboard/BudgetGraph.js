@@ -12,6 +12,7 @@ export default function BudgetGraph({budgets,budgetCategory}){
             <BarChart colors={["lightBlue"]} width={600} height={300} series={[{ data: uData, label: 'Budgets', type: 'bar' }]} xAxis={[{ scaleType: 'band', data: xLabels }]}>
                 <BarPlot />
             </BarChart>
+            <p style={{textAlign:"center"}}>BudgetGraph</p>
         </div>
     );
 }

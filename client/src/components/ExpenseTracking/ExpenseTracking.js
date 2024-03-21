@@ -10,6 +10,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import Navbar from './Navbar.js';
+
+import ExpenseListTrack from "./ExpenseListTrack.js";
+import './ExpenseTrack.css';
 
 import ExportFile from "./ExportFile";
 
@@ -130,7 +134,7 @@ export default function ExpenseTracking(){
         function PieCenterLabel({ children }) {
           const { width, height, left, top } = useDrawingArea();
           return (
-            <StyledText x={left + width/1.65} y={top + height/3}>
+            <StyledText x={left + width/2.4} y={top + height/2.8}>
               {children}
             </StyledText>
           );
@@ -138,7 +142,7 @@ export default function ExpenseTracking(){
         function PieCenterLabel2({ children }) {
           const { width, height, left, top } = useDrawingArea();
           return (
-            <StyledText x={left + width/1.65} y={top + height/2.7}>
+            <StyledText x={left + width/2.4} y={top + height/2.2}>
               {children}
             </StyledText>
           );
@@ -154,68 +158,79 @@ export default function ExpenseTracking(){
 
       return(
         <div>
-          <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Category</InputLabel>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{width:"150px"}} value={categoryFilter} label="Category" onChange={handleChange}>
-            {chartData && chartData.map((item,index) => (
-              <MenuItem key={index} value={item.label}>{item.label}</MenuItem>
-            ))}
-          </Select>
-          </FormControl>
-          <Box sx={{ width: 250 }}>
-            Date Range
-          <Slider getAriaLabel={() => 'Expense Date range'} value={value} onChange={handleSliderChange} valueLabelDisplay="auto"
-              getAriaValueText={valuetext} min={0}
-              max={30}
-            />
-            </Box>
-            {expenses.length >0 && 
-          <ExportFile expenses={expenses}/>
-            }
-          {expenses.length>0 && expenses.map((item,index)=>(
-            <div key={index}>
-              <p>{item.category}</p>
-              <p>{item.budget}</p>
-              <p>{item.amount}</p>
-              <p>{item.remaining}</p>
+          <Navbar/>
+          <div className="expense-track">
+            <h1>Track Expense</h1>
+            <div className="charts">
+              <div className="chart-container">
+                <div>
+                  <PieChart
+                    series={[
+                      {
+                        data: chartData,
+                        cx: 100,
+                        cy: 120,
+                        innerRadius: 50,
+                        outerRadius: 100,
+                        arcLabel: getArcLabel,
+                      },
+                    ]}
+                    sx={{
+                      [`& .${pieArcLabelClasses.root}`]: {
+                        fill: 'white',
+                        fontWeight: 'bold',
+                      },
+                    }}
+                    width={350}
+                    height={300}
+                    slotProps={{
+                      legend: { hidden: false },
+                    }}
+                  >
+                    <PieCenterLabel>Total Budget</PieCenterLabel>
+                    <PieCenterLabel2>{Total}</PieCenterLabel2>
+                  </PieChart>
+                </div>
+                <div>
+                  <LineChart
+                    width={500}
+                    height={300}
+                    series={[
+                      { curve: "linear", data: chartDateData, label: "Expense", color: "orange" },
+                    ]}
+                    xAxis={[{ scaleType: 'point', data: xLabels }]}
+                  />
+                </div>
+              </div>
             </div>
-          ))}
-          <PieChart
-            series={[
-              {
-                data: chartData,
-                cx: 300,
-                cy: 200,
-                innerRadius: 50,
-                outerRadius: 100,
-                arcLabel: getArcLabel,
-              },
-            ]}
-            sx={{
-              [`& .${pieArcLabelClasses.root}`]: {
-                fill: 'white',
-                fontWeight: 'bold',
-              },
-            }}
-            width={600}
-            height={600}
-            slotProps={{
-              legend: { hidden: false },
-            }}
-          >
-            <PieCenterLabel>Total Budget</PieCenterLabel>
-            <PieCenterLabel2>{Total}</PieCenterLabel2>
-          </PieChart>
-
-          <LineChart
-            width={500}
-            height={300}
-            series={[
-              { curve: "linear", data: chartDateData, label: "Expense", color: "orange" },
-            ]}
-            xAxis={[{ scaleType: 'point', data: xLabels }]}
-          />
-
+            <div className="button-group">
+              <div className="button-group-container">
+                <div>
+                {expenses.length >0 && <ExportFile expenses={expenses}/>}
+                </div>
+                <div>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+                    <Select labelId="demo-simple-select-label" id="demo-simple-select" style={{ width: "200px" }} value={categoryFilter} label="Category" onChange={handleChange}>
+                      {chartData && chartData.map((item, index) => (
+                        <MenuItem key={index} value={item.label}>{item.label}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div>
+                  <Box sx={{ width: 250 }}>
+                    Date Range
+                    <Slider getAriaLabel={() => 'Expense Date range'} value={value} onChange={handleSliderChange} valueLabelDisplay="auto"
+                      getAriaValueText={valuetext} min={0}
+                      max={30}
+                    />
+                  </Box>
+                </div>
+              </div>
+            </div>
+            <ExpenseListTrack expense={expenses}/>
+          </div>
         </div>
     );
 }

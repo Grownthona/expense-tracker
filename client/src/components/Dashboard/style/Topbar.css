@@ -21,10 +21,10 @@
 }
 .navbar-links{
     margin-right: 10px;
-    width: 400px;
+    width: 150px;
 }
 .navbar-links a {
-    margin-left: 20px;
+    margin-left: 0px;
     margin-right: 20px;
     text-decoration: none;
     color: #262626;

@@ -9,8 +9,6 @@ export default function Topbar(){
         <div>
             <div className="navbar">
                 <div className="navbar-links">
-                    <Link to={'/dashboard'}>Home</Link>
-                    <Link to={'/dashboard'}>Home</Link>
                     <Badge color="secondary" variant="dot"><NotificationsIcon /></Badge>
                 </div>
             </div>

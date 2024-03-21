@@ -1,8 +1,19 @@
-import React from 'react';
+import React ,{useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import './style/Home.css';
 import img1 from './images/manage-money-concept.jpg'
 export default function Home(){
+
+   const navigate = useNavigate();
+  
+   useEffect(() => {
+    const check = localStorage.getItem('token');
+    if(check){
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+  
     /*const [loggedIn, setLoggedIn] = useState(false);
     const handleLogin = () => {
         setLoggedIn(true);

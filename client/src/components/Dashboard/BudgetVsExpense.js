@@ -26,9 +26,10 @@ export default function BudgetVsExpense({budgets,budgetCategory,expense}){
     
     return(
         <div>
-            <BarChart colors={["black","orange"]} width={800} height={300} series={[{ data: uData, label: 'Budgets', type: 'bar' },{ data: pData, label: 'Expenses', id: 'uvId' },]} xAxis={[{ scaleType: 'band', data: xLabels }]}>
+            <BarChart colors={["black","orange"]} width={700} height={300} series={[{ data: uData, label: 'Budgets', type: 'bar' },{ data: pData, label: 'Expenses', id: 'uvId' },]} xAxis={[{ scaleType: 'band', data: xLabels }]}>
                 <BarPlot />
             </BarChart>
+            <p style={{textAlign:"center"}}>Budget Vs Expense</p>
         </div>
     );
 }

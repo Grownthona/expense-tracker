@@ -18,7 +18,7 @@ export default function SignIn(){
 
 
     const handleLogin = async (e) => {
-
+      e.preventDefault();
     try {
         const response = await fetch('http://localhost:5000/user/signin', {
             method: 'POST',
