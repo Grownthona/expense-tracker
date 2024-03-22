@@ -23,7 +23,7 @@ const budgetSchema = new mongoose.Schema({
     default: new Date().getMonth() + 1
   },
   year : {
-    type: String
+    type: Number,
     //default: new Date().getFullYear()
   },
   date: {
