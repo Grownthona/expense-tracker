@@ -24,33 +24,39 @@ router.route('/addnewcategory').post( async (req, res) => {
   const {user,category,amount} = req.body;
   console.log(user+' '+category+' '+amount);
   try {
-    const newCategory = new UserCategory({
-      user : user,
-      category : category,
-      amount : amount
-    });
-    await newCategory.save();
-   
-      const mergedCategoryWithBudget = {
-        category: category,
-        amount: amount
-      };
+      
+      const userCategory = await UserCategory.findOne({ user: user, category: category });
 
-      Budget.updateOne({ user : user }, { $push: { budgets: mergedCategoryWithBudget } } )
+      if(!userCategory){
+        const newCategory = new UserCategory({
+          user : user,
+          category : category,
+          amount : amount
+        });
+        await newCategory.save();
+        
+        const mergedCategoryWithBudget = {
+          category: category,
+          amount: amount
+        };
+        Budget.updateOne({ user : user }, { $push: { budgets: mergedCategoryWithBudget } } )
         .then(result => {
-           return res.json(CurrentMonthBudget);
+           return res.status(201).json({result,message:"New Category added!"});
         })
         .catch(error => {
           res.status(500).send(error);
       });
+      }else{
+        return res.status(404).json({ message: 'This category already exists' });
+      }
 
-    
-    return res.status(201).json({ message: 'New Category added!' });
+    //return res.status(201).json({ message: 'New Category added!' });
     
   } catch (err) {
-    res.status(500).send('Server error');
+    res.status(404).send('Server error');
   }
 });
+
 
 router.route('/addbudget').post(async (req, res) => {
   try {
@@ -68,6 +74,7 @@ router.route('/addbudget').post(async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 router.route('/monthlybudget').post(checkLogin,async (req, res) => {
   const userId = req.userId;
   const monthName = req.body.month;
@@ -92,10 +99,9 @@ router.route('/monthlybudget').post(checkLogin,async (req, res) => {
   
   } catch(err){
     return res.status(400).json(err);
-  }
-  
-  
+  } 
 });
+
 router.route('/').get(checkLogin,async (req, res) => {
 
     const userId = req.userId;

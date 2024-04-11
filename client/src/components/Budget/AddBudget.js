@@ -41,8 +41,10 @@ export default function AddBudget({id,category,total,budget,currentamount}){
 
               body: JSON.stringify({ budget }),
             });
-            const data = await response.json();
+            //const data = await response.json();
+
             alert("Budget Added");
+            window.location.reload();
           } catch (error) {
             console.error('Error:', error);
         }
@@ -79,8 +81,9 @@ export default function AddBudget({id,category,total,budget,currentamount}){
               body: JSON.stringify({ budget }),
             });
             const data = await response.json();
-            alert(data);
+            //alert(data);
             //console.log(data);
+            window.location.reload();
           } catch (error) {
             console.error('Error:', error);
         }
@@ -107,8 +110,8 @@ export default function AddBudget({id,category,total,budget,currentamount}){
             :
             <div className='add-budget-form'>
               <div className='add-budget-form-container'>
-                  <h2 style={{textAlign:"center"}}>Please add the total Price First</h2>
-                  <TextField id="standard-basic" label="Total Budget" style={{marginTop:"2rem"}} variant="standard" value={totalBud} onChange={(e) => setTotal(e.target.value)} />
+                  <h2 style={{textAlign:"center"}}>Please add the monthlu budget</h2>
+                  <TextField fullWidth id="standard-basic" label="Total Budget" style={{marginTop:"2rem"}} variant="standard" value={totalBud} onChange={(e) => setTotal(e.target.value)} />
                   <button className="button-37" style={{marginTop:"2rem",marginLeft:"1rem"}} onClick={handleTotal} role="button">Save</button>
               </div>
             </div>

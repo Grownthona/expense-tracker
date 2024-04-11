@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -17,6 +17,7 @@ export default function SignUp(){
    
     //const [message, setMessage] = useState('');
     const [isValid, setIsValid] = useState(true);
+    const [isLoggedIn, setLoggedIn] = useState(false);
     const [isValidPassword, setIsValidPassword] = useState(true);
 
     const handleUserName = (event) => {
@@ -25,6 +26,12 @@ export default function SignUp(){
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setIsValid(emailRegex.test(emailValue));
     };
+
+    useEffect(() => {
+      if(isLoggedIn){
+        navigate("/user/signin/");
+      }
+    }, [isLoggedIn,navigate]);
     
     const handleSignup = async (e) => {
         //e.preventDefault();
@@ -49,8 +56,9 @@ export default function SignUp(){
           });
           const data = await response.json();
           if (response.status === 200) {
-            navigate("/user/signin");
             //alert('User created successfully');
+            navigate("/user/signin/");
+            setLoggedIn(true);
           } else {
             alert(data.message);
           }

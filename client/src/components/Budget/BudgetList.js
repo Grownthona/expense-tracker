@@ -10,8 +10,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-
-
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -104,8 +102,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-
-
 export default function BudgetList({budget,budgetlist}){
     const [totalBudget, setTotalBudget] = useState(0.0);
     const [page, setPage] = React.useState(0);
@@ -126,11 +122,12 @@ export default function BudgetList({budget,budgetlist}){
     if(budget.length<=0){
       return <div>No records yet!</div>;
     }
+    
     return(
         <div>
             <div className="button-groups">
                 <div className="button-container">
-                {budget && <AddNewCategory user={budget.user} monthlyBudget={budget.totalBudget} spendingBudget={totalBudget}/>}
+                {budget && <AddNewCategory user={budget.user} monthlyBudget={budget.totalBudget} spendingBudget={totalBudget} budget={budget}/>}
                 </div>
                 {budget.totalBudget>0 &&
                     <div className="info-box">

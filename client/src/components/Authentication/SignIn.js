@@ -16,9 +16,15 @@ export default function SignIn(){
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+      const check = localStorage.getItem('token');
+      if(check){
+        navigate("/dashboard");
+      }
+    }, [navigate]);
 
     const handleLogin = async (e) => {
-      e.preventDefault();
+      //e.preventDefault();
     try {
         const response = await fetch('http://localhost:5000/user/signin', {
             method: 'POST',
@@ -40,13 +46,6 @@ export default function SignIn(){
         console.error(error);
     }
     };
-
-    useEffect(() => {
-      const check = localStorage.getItem('token');
-      if(check){
-        navigate("/dashboard");
-      }
-    }, [navigate]);
     
 
     return (

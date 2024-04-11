@@ -15,8 +15,10 @@ export default function BudgetVsExpense({budgets,budgetCategory,expense}){
             for(let i=0;i<xLabels.length;i++){
                 let categoryName = xLabels[i];
                 const filteredData = expense.filter(expense => expense.category === categoryName);
-                if(filteredData.length >0){
+                if(filteredData.length >0 && filteredData[0].category === categoryName){
                     temp.push(filteredData[0].amount);
+                }else{
+                    temp.push(0);
                 }
             }
             pData = temp;
